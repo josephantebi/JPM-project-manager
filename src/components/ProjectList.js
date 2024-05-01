@@ -3,7 +3,7 @@ import "../style.css";
 import Project from "./Project";
 import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 
-function ProjectList({ projects }) {
+function ProjectList({ projects, users, isLoadingUsers }) {
   const { toProject, setToProject } = useContext(ProjectManagerContext);
   if (projects.length === 0)
     return (
@@ -11,7 +11,6 @@ function ProjectList({ projects }) {
         No projects for this role yet! Create your first one 😉
       </p>
     );
-
   const handle_to_project = () => {
     setToProject(toProject + 5);
   };
@@ -23,7 +22,12 @@ function ProjectList({ projects }) {
       </p>
       <ul className="projects-list">
         {projects.map((project) => (
-          <Project project={project} key={project.id} />
+          <Project
+            project={project}
+            key={project.id}
+            users={users}
+            isLoadingUsers={isLoadingUsers}
+          />
         ))}
       </ul>
       <button className="load-more" onClick={handle_to_project}>

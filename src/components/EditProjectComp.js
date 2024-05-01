@@ -12,6 +12,7 @@ function EditProject({
   dueDate,
   setDueDate,
 }) {
+  const sub_projects = foundProject.sub_projects.allSubProjects;
   const handleNameChange = (event) => {
     setProjectName(event.target.value);
   };
@@ -79,11 +80,11 @@ function EditProject({
     setTempSubProjects(updatedSubProjects);
   };
 
-  const totalPercent = foundProject.sub_projects.reduce(
+  const totalPercent = sub_projects.reduce(
     (acc, cur) => acc + Number(cur.subProjectPercent),
     0
   );
-  const averagePercent = totalPercent / foundProject.sub_projects.length;
+  const averagePercent = totalPercent / sub_projects.length;
 
   useEffect(() => {
     setDueDate(foundProject.due_date || "");

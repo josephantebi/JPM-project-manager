@@ -14,15 +14,14 @@ function EditProjectpage() {
   const project = location.state?.project;
   const users = location.state?.users;
   const foundProject = project;
-  const projectsRoles = foundProject.roles;
+  const projectsRoles = foundProject.roles.allRoles;
+  const sub_projects = foundProject.sub_projects.allSubProjects;
 
   const [projectName, setProjectName] = useState(foundProject.project_name);
   const [projectDetails, setProjectDetails] = useState(
     foundProject.project_details
   );
-  const [tempSubProjects, setTempSubProjects] = useState([
-    ...foundProject.sub_projects,
-  ]);
+  const [tempSubProjects, setTempSubProjects] = useState([...sub_projects]);
   const [dueDate, setDueDate] = useState("");
 
   const findRolesByNames = (names) => {

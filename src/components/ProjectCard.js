@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
-import { UserContext } from "../Providers/User-Provider";
 import { Link } from "react-router-dom";
+import Spinner from "../components/Spinner";
 import "../style.css";
 
-function ProjectCard({ project }) {
-  const { users } = useContext(UserContext);
-  const { id, project_name, percent, created_at, roles } = project;
+function ProjectCard({ project, users, isLoadingUsers }) {
+  const { id, project_name, percent, created_at } = project;
+  const roles = project.roles.allRoles;
+
+  if (isLoadingUsers) return <Spinner />;
 
   const findRolesByNames = (names) => {
     return users.filter((role) =>

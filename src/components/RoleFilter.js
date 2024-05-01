@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { UserContext } from "../Providers/User-Provider";
+import React, { useContext, useEffect } from "react";
+import Spinner from "../components/Spinner";
 import "../style.css";
 
 function RoleFilter({
@@ -7,16 +7,19 @@ function RoleFilter({
   setCurrentRole,
   projects,
   setFilteredProjects,
+  users,
+  isLoadingUsers,
 }) {
-  const { users } = useContext(UserContext);
+  if (isLoadingUsers) return <Spinner />;
 
   const handleRoleClick = (roleName) => {
     setCurrentRole(roleName);
+
     if (roleName === "All") {
       setFilteredProjects(projects);
     } else {
       const filtered = projects.filter((project) =>
-        project.roles.includes(roleName)
+        project.roles.allRoles.includes(roleName)
       );
       setFilteredProjects(filtered);
     }

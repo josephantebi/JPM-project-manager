@@ -9,13 +9,13 @@ function FullProject({ project, users }) {
   const {
     project_name,
     project_details,
-    sub_projects,
-    roles,
     created_at,
     due_date,
     percent,
     posted_by,
   } = project;
+  const roles = project.roles.allRoles;
+  const sub_projects = project.sub_projects.allSubProjects;
 
   // date
   function formatDate(isoDateString) {
@@ -27,15 +27,13 @@ function FullProject({ project, users }) {
   }
   const date_created_at = formatDate(created_at);
 
-  const projectsRoles = roles;
-
   const findRolesByNames = (names) => {
     return users.filter((role) =>
       names.includes(role.first_name.toUpperCase())
     );
   };
+  const matchedRoles = findRolesByNames(roles);
 
-  const matchedRoles = findRolesByNames(projectsRoles);
   const roleCount = sub_projects
     .flatMap((subProject) => subProject.subProjectRoles)
     .reduce((acc, roleName) => {

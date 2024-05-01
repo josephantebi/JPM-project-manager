@@ -63,7 +63,7 @@ function Fullprojectpage() {
         >
           X
         </button>
-        {connected && (
+        {connected || (
           <span className="full-project-btn-span">
             <span
               className="material-symbols-outlined"
