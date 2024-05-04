@@ -1,29 +1,33 @@
 import PageNav from "../components/Header";
 import React, { useState, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
-import { UserContext } from "../Providers/User-Provider";
+// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 import EditProject from "../components/EditProjectComp";
+import { useQueryClient } from "@tanstack/react-query";
+import { editProject } from "../services/apiProjects";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 function EditProjectpage() {
   const navigate = useNavigate();
-  const { updateProject } = useContext(ProjectManagerContext);
+  // const { updateProject } = useContext(ProjectManagerContext);
   // const { users } = useContext(UserContext);
   const { id: paramsID } = useParams();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const project = location.state?.project;
   const users = location.state?.users;
   const foundProject = project;
   const projectsRoles = foundProject.roles.allRoles;
   const sub_projects = foundProject.sub_projects.allSubProjects;
-
+  // const [projectReturn, setProjectReturn] = useState(foundProject);
   const [projectName, setProjectName] = useState(foundProject.project_name);
   const [projectDetails, setProjectDetails] = useState(
     foundProject.project_details
   );
   const [tempSubProjects, setTempSubProjects] = useState([...sub_projects]);
   const [dueDate, setDueDate] = useState("");
-
+  let projectReturn = foundProject;
   const findRolesByNames = (names) => {
     return users.filter((role) =>
       names.includes(role.first_name.toUpperCase())
@@ -36,33 +40,54 @@ function EditProjectpage() {
   const newProjectDetails =
     projectDetails.charAt(0).toUpperCase() + projectDetails.slice(1);
   const allRoles = Array.from(
-    new Set(tempSubProjects.flatMap((subProject) => subProject.subProjectRoles))
+    new Set(
+      tempSubProjects
+        .flatMap((subProject) => subProject.subProjectRoles)
+        .map((role) => role.toUpperCase())
+    )
   );
 
   const totalPercent = tempSubProjects.reduce(
     (acc, cur) => acc + Number(cur.subProjectPercent),
     0
   );
-  const averagePercent = (totalPercent / tempSubProjects.length).toFixed();
+  // const averagePercent = (totalPercent / tempSubProjects.length).toFixed();
+  const averagePercent = Math.round(totalPercent / tempSubProjects.length);
 
   const editedProject = {
     project_name: newProjectName,
     project_details: newProjectDetails,
-    sub_projects: tempSubProjects,
-    roles: allRoles,
+    sub_projects: {
+      allSubProjects: tempSubProjects,
+    },
+    roles: {
+      allRoles: allRoles,
+    },
     created_at: foundProject.created_at,
     due_date: dueDate,
     percent: averagePercent,
     posted_by: foundProject.posted_by,
   };
 
+  const { mutate, isLoading } = useMutation({
+    mutationFn: ({ editedProject, id }) => editProject(editedProject, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      toast.success("Project successfully edited", { duration: 3000 });
+    },
+    onError: (error) => {
+      toast.error("Error editing project");
+    },
+  });
+
   const handleExitClick = () => {
     navigate(`/projects/${paramsID}`, {
-      state: { project: editedProject, users: users },
+      state: { project: projectReturn, users: users },
     });
   };
   const saveChanges = async () => {
-    await updateProject(editedProject, project.id);
+    mutate({ editedProject, id: paramsID });
+    projectReturn = editedProject;
     handleExitClick();
   };
 

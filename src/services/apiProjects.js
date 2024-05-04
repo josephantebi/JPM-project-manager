@@ -1,4 +1,4 @@
-import supabase from "../PrivateFiles/supabase";
+import supabase from "./supabase";
 
 export async function getProjects() {
   const { data, error } = await supabase
@@ -14,10 +14,7 @@ export async function getProjects() {
 }
 
 export async function createProject(newProject) {
-  const { data, error } = await supabase
-    .from("projects")
-    .insert([newProject])
-    .select();
+  const { data, error } = await supabase.from("projects").insert([newProject]);
   if (error) {
     console.error(error);
     throw new Error("Project could not be created");
@@ -30,7 +27,8 @@ export async function editProject(editedProject, id) {
   const { data, error } = await supabase
     .from("projects")
     .update(editedProject)
-    .match({ id: id });
+    .match({ id: id })
+    .select();
   // .eq("id", id)
 
   if (error) {

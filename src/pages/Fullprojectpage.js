@@ -2,14 +2,20 @@ import React, { useEffect, useContext } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../style.css";
 import PageNav from "../components/Header";
-import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
+// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 import FullProject from "../components/FullProject";
 import { useLogInUser } from "../Providers/log-in-user-provider";
+import { useMutation } from "@tanstack/react-query";
+import { deleteProject } from "../services/apiProjects";
+import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import Spinner from "../components/Spinner";
 
 function Fullprojectpage() {
-  const { removeProject } = useContext(ProjectManagerContext);
+  // const { removeProject } = useContext(ProjectManagerContext);
   const location = useLocation();
   const { currentUser } = useLogInUser();
+  const queryClient = useQueryClient();
   function isEmpty(obj) {
     return JSON.stringify(obj) === "{}";
   }
@@ -26,13 +32,25 @@ function Fullprojectpage() {
     window.scrollTo(0, 0);
   }, []);
 
+  const { isLoading, mutate } = useMutation({
+    mutationFn: (id) => deleteProject(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      if (isLoading) return <Spinner />;
+      toast.success("Project deleted successfully", { duration: 3000 });
+      navigate("/");
+    },
+    onError: (error) => {
+      toast.error("Error deleting project");
+    },
+  });
+
   const deleteButton = () => {
     const isConfirmed = window.confirm(
       "Are you sure you want to delete this project?"
     );
     if (isConfirmed) {
-      removeProject(id);
-      navigate("/");
+      mutate(id);
     }
   };
   const handleEditClick = () => {
@@ -63,7 +81,7 @@ function Fullprojectpage() {
         >
           X
         </button>
-        {connected || (
+        {connected && (
           <span className="full-project-btn-span">
             <span
               className="material-symbols-outlined"

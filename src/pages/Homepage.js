@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import "../style.css";
-import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
+// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 import ProjectList from "../components/ProjectList";
 import PageNav from "../components/Header";
 import NewProjectForm from "../components/NewProjectForm";
@@ -18,8 +18,7 @@ function Homepage() {
   const [setProjectsData] = useState();
   const [setUsersData] = useState();
   const [currentRole, setCurrentRole] = useState("All");
-  const { projects, setQuery } = useContext(ProjectManagerContext);
-  const [filteredProjects, setFilteredProjects] = useState(projects);
+  // const [filteredProjects, setFilteredProjects] = useState(projects);
   const { currentUser } = useLogInUser();
   function isEmpty(obj) {
     return JSON.stringify(obj) === "{}";
@@ -32,7 +31,7 @@ function Homepage() {
     data: projectsData,
     error,
   } = useQuery({
-    queryKey: ["project"],
+    queryKey: ["projects"],
     queryFn: getProjects,
   });
 
@@ -50,10 +49,12 @@ function Homepage() {
   return (
     <>
       <PageNav />
-      {connected || (
+      {connected && (
         <AddNewProject showForm={showForm} setShowForm={setShowForm} />
       )}
-      {showForm && <NewProjectForm setShowForm={setShowForm} />}
+      {showForm && (
+        <NewProjectForm setShowForm={setShowForm} usersData={usersData} />
+      )}
       <div className="sort-list-div">
         <input
           placeholder="Filter by Project Name / Details"
@@ -65,7 +66,7 @@ function Homepage() {
           currentRole={currentRole}
           setCurrentRole={setCurrentRole}
           projects={projectsData}
-          setFilteredProjects={setFilteredProjects}
+          // setFilteredProjects={setFilteredProjects}
           users={usersData}
           isLoadingUsers={isLoadingUsers}
         />

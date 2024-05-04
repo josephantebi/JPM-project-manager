@@ -1,4 +1,4 @@
-import supabase from "../PrivateFiles/supabase";
+import supabase from "./supabase";
 
 export async function getUsers() {
   let { data, error } = await supabase.from("users").select("*").order("id");

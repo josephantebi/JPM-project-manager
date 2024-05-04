@@ -1,9 +1,12 @@
 import React, { useState, useContext } from "react";
 import "../style.css";
-import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
-import { UserContext } from "../Providers/User-Provider";
+// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
+import { useMutation } from "@tanstack/react-query";
+import { createProject } from "../services/apiProjects";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-function NewProjectForm({ setShowForm }) {
+function NewProjectForm({ setShowForm, usersData }) {
   const [projectName, setProjectName] = useState("");
   const [projectDetails, setProjectDetails] = useState("");
   const projectNameLength = projectName.length;
@@ -11,8 +14,8 @@ function NewProjectForm({ setShowForm }) {
   const [selectsRole, setSelectsRole] = useState([{ id: 0, value: "" }]);
   const [inputs, setInputs] = useState([{ name: "", roles: [""] }]);
   const [dueDate, setDueDate] = useState("");
-  const { addProject } = useContext(ProjectManagerContext);
-  const { users } = useContext(UserContext);
+  // const { addProject } = useContext(ProjectManagerContext);
+  const queryClient = useQueryClient();
 
   const handleAddInput = () => {
     setInputs(inputs.concat([{ name: "", roles: [""] }]));
@@ -48,6 +51,17 @@ function NewProjectForm({ setShowForm }) {
     setInputs(newInputs);
   };
 
+  const { mutate, isLoading } = useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      toast.success("Project successfully created", { duration: 3000 });
+    },
+    onError: (error) => {
+      toast.error("Error deleting project");
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -68,7 +82,9 @@ function NewProjectForm({ setShowForm }) {
       const allInputs = inputs.map((input, index) => ({
         id: index + 1,
         subProjectName: input.name,
-        subProjectRoles: input.roles.filter((role) => role !== ""),
+        subProjectRoles: input.roles
+          .filter((role) => role !== "")
+          .map((role) => role.toUpperCase()),
         subProjectPercent: "0",
       }));
 
@@ -95,14 +111,19 @@ function NewProjectForm({ setShowForm }) {
       const newProject = {
         project_name: newProjectName,
         project_details: newProjectDetails,
-        sub_projects: allInputs,
-        roles: allRoles,
+        sub_projects: {
+          allSubProjects: allInputs,
+        },
+        roles: {
+          allRoles: allRoles,
+        },
         created_at: convertDateToISO(createdIn),
         due_date: dueDate,
         percent: 0,
         posted_by: 1,
       };
-      addProject(newProject);
+
+      mutate(newProject);
       setShowForm(false);
     }
   };
@@ -160,7 +181,7 @@ function NewProjectForm({ setShowForm }) {
                   }
                 >
                   <option value="">Choose Role</option>
-                  {users.map((cat) => (
+                  {usersData.map((cat) => (
                     <option key={cat.id} value={cat.first_name}>
                       {cat.first_name.toUpperCase()}
                     </option>

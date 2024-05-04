@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { UserContext } from "../Providers/User-Provider";
+import { UserContext } from "../private/hide/User-Provider";
 import { PieChart, Tooltip } from "recharts";
 import "../style.css";
 import { Pie } from "recharts/lib/polar/Pie";

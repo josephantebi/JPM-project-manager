@@ -8,8 +8,7 @@
 /.pnp
 .pnp.js
 .env
-/PrivateFiles
-/Providers
+/private
 
 
 
@@ -70,8 +69,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-PrivateFiles/
-Providers/
+private/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
