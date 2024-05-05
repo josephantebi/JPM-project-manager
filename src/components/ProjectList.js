@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
 import Project from "./Project";
-// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 
 function ProjectList({ projects, users, isLoadingUsers }) {
   // const { toProject, setToProject } = useContext();

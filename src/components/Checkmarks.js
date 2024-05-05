@@ -1,82 +1,107 @@
-// import * as React from "react";
-// import OutlinedInput from "@mui/material/OutlinedInput";
-// import InputLabel from "@mui/material/InputLabel";
-// import MenuItem from "@mui/material/MenuItem";
-// import FormControl from "@mui/material/FormControl";
-// import ListItemText from "@mui/material/ListItemText";
-// import Select from "@mui/material/Select";
-// import Checkbox from "@mui/material/Checkbox";
+import React from "react";
+import { useTheme } from "@mui/material/styles";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.25)",
+      overflow: "auto",
+      border: "none",
+    },
+  },
+};
 
-// function MultipleSelectCheckmarks({ initialSelectedNames, onChange }) {
-//   // Convert initial names to IDs for easier handling in Select
-//   const initialIds = roleList
-//     .filter((role) => initialSelectedNames.includes(role.name))
-//     .map((role) => role.id.toString());
-//   const [selectedRoles, setSelectedRoles] = React.useState(initialIds);
+function getStyles(name, personNames, theme) {
+  return {
+    fontWeight:
+      personNames.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+export default function MultipleSelect({
+  users,
+  onSelectedNamesChange,
+  selectedNames,
+}) {
+  const theme = useTheme();
+  const [personNames, setPersonNames] = React.useState([]);
 
-//   const handleChange = (event) => {
-//     const {
-//       target: { value },
-//     } = event;
-//     // Update selected roles
-//     setSelectedRoles(typeof value === "string" ? value.split(",") : value);
-//     // Notify parent component with names instead of IDs
-//     onChange(
-//       value.map((v) => roleList.find((role) => role.id.toString() === v)?.name)
-//     );
-//   };
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    const result = typeof value === "string" ? value.split(",") : value;
+    console.log("Selected values:", result); // Log to see what's being selected
+    onSelectedNamesChange(result);
+  };
 
-//   return (
-//     <div>
-//       <FormControl fullWidth sx={{ m: 1 }}>
-//         <InputLabel id="demo-multiple-checkbox-label">Roles</InputLabel>
-//         <Select
-//           labelId="demo-multiple-checkbox-label"
-//           id="demo-multiple-checkbox"
-//           multiple
-//           value={selectedRoles}
-//           onChange={handleChange}
-//           input={<OutlinedInput label="Roles" />}
-//           renderValue={(selected) =>
-//             selected
-//               .map(
-//                 (id) => roleList.find((role) => role.id.toString() === id)?.name
-//               )
-//               .join(", ")
-//           }
-//           MenuProps={{
-//             PaperProps: {
-//               style: {
-//                 maxHeight: 224,
-//                 width: 250,
-//               },
-//             },
-//           }}
-//         >
-//           {roleList.map((role) => (
-//             <MenuItem key={role.id} value={role.id.toString()}>
-//               <Checkbox checked={selectedRoles.includes(role.id.toString())} />
-//               <ListItemText
-//                 primary={role.name}
-//                 primaryTypographyProps={{ style: { color: role.color } }}
-//               />
-//             </MenuItem>
-//           ))}
-//         </Select>
-//       </FormControl>
-//     </div>
-//   );
-// }
-
-// export default MultipleSelectCheckmarks;
+  return (
+    <div>
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-name-label" sx={{ color: "white" }}>
+          Users:
+        </InputLabel>
+        <Select
+          labelId="demo-multiple-name-label"
+          id="demo-multiple-name"
+          multiple
+          value={selectedNames}
+          onChange={handleChange}
+          // value={personNames}
+          input={<OutlinedInput label="Name" />}
+          MenuProps={MenuProps}
+          sx={{
+            ".MuiOutlinedInput-notchedOutline": {
+              borderColor: "black",
+            },
+            ".MuiSelect-select": {
+              bgcolor: "#4e5681",
+              color: "white",
+            },
+            ".MuiPaper-root": {
+              boxShadow: "none",
+            },
+          }}
+        >
+          {users.map((user) => {
+            const fullName = `${user.first_name} ${user.surname}`;
+            return (
+              <MenuItem
+                key={user.id}
+                value={fullName}
+                sx={{
+                  bgcolor: "#5066de",
+                  color: "black",
+                  "&.Mui-selected": {
+                    bgcolor: "#1c2a7d",
+                    color: "white",
+                    "&:hover": {
+                      bgcolor: "#48517e",
+                      color: "white",
+                    },
+                  },
+                  "&:hover": {
+                    bgcolor: "#2d3878",
+                    color: "white",
+                  },
+                }}
+              >
+                {fullName}
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
