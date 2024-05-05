@@ -10,6 +10,21 @@ export async function getUsers() {
   return data;
 }
 
+export async function getUsersByOrganization(organization) {
+  let { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("organization", organization)
+    .order("id");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Data could not be loaded");
+  }
+
+  return data;
+}
+
 export async function createUser(newUser) {
   const { data, error } = await supabase
     .from("users")

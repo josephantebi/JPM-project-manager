@@ -73,16 +73,24 @@ function FullProject({ project, users }) {
     };
   });
 
-  function getFirstNameById(id) {
+  function getUserById(id) {
     const user = users.find((user) => user.id === id);
-    return user ? user.first_name : null;
+    return user ? user : null;
   }
+
+  const postedByDetails = getUserById(posted_by);
+  const fullName =
+    postedByDetails.first_name.charAt(0).toUpperCase() +
+    postedByDetails.first_name.slice(1).toLowerCase() +
+    " " +
+    postedByDetails.surname.charAt(0).toUpperCase() +
+    postedByDetails.surname.slice(1).toLowerCase();
 
   return (
     <div className="project full-project">
       <span>
         <div className="merriweather-font created-by">
-          Project created by: {getFirstNameById(posted_by).toUpperCase()}
+          Project created by: {fullName}
         </div>
         <div className="merriweather-font">Project's name:</div>
         <div className="project-name">{project_name}</div>
@@ -120,7 +128,7 @@ function FullProject({ project, users }) {
                             color: role ? role.color : "inherit",
                           }}
                         >
-                          {roleName.toUpperCase()}
+                          {roleName + " " + role.surname[0].toUpperCase() + "."}
                         </span>
                         {index < subProject.subProjectRoles.length - 1 && (
                           <span style={{ color: "#FFFFFF" }}>, </span>
@@ -187,7 +195,10 @@ function FullProject({ project, users }) {
                   className="in-project-role"
                   style={{ backgroundColor: cat.color || "#ccc" }}
                 >
-                  {cat.first_name.toUpperCase()}
+                  {cat.first_name.toUpperCase() +
+                    " " +
+                    cat.surname[0].toUpperCase() +
+                    "."}
                 </div>
               </li>
             ))}

@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import "../style.css";
 
 function ProjectCard({ project, users, isLoadingUsers }) {
-  const { id, project_name, percent, created_at } = project;
+  const { id, project_name, project_details, percent, created_at } = project;
   const roles = project.roles.allRoles;
+
+  const [isTextVisible, setIsTextVisible] = useState(false);
 
   if (isLoadingUsers) return <Spinner />;
 
@@ -24,9 +26,35 @@ function ProjectCard({ project, users, isLoadingUsers }) {
   const year = date.getFullYear();
   const formattedDate = `${day}/${month}/${year}`;
 
+  const toggleTextVisibility = () => {
+    setIsTextVisible(!isTextVisible);
+  };
+
   return (
     <span className="project-in">
-      <p className="project-in-name">{project_name}</p>
+      <span>
+        <p className="project-in-name">{project_name}</p>
+        {isTextVisible ? (
+          <>
+            <div>
+              <p className="expand-more-text">{project_details}</p>
+              <span
+                className="material-symbols-outlined expand"
+                onClick={toggleTextVisibility}
+              >
+                expand_less
+              </span>
+            </div>
+          </>
+        ) : (
+          <span
+            className="material-symbols-outlined expand"
+            onClick={toggleTextVisibility}
+          >
+            expand_more
+          </span>
+        )}
+      </span>
       <div className="date-percentage">
         <div className="role-in-project">
           <ul>
@@ -59,6 +87,9 @@ function ProjectCard({ project, users, isLoadingUsers }) {
           Show full project
         </Link>
       </span>
+      {/* <span class="material-symbols-outlined expand">expand_more</span>
+      <span class="material-symbols-outlined">expand_less</span>
+      <p>text:</p> */}
     </span>
   );
 }

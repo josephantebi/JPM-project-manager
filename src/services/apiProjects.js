@@ -13,6 +13,21 @@ export async function getProjects() {
   return data;
 }
 
+export async function getProjectsByOrganization(organization) {
+  let { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("organization", organization)
+    .order("id");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Data could not be loaded");
+  }
+
+  return data;
+}
+
 export async function createProject(newProject) {
   const { data, error } = await supabase.from("projects").insert([newProject]);
   if (error) {

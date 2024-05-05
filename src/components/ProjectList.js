@@ -1,10 +1,38 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "../style.css";
 import Project from "./Project";
 // import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 
 function ProjectList({ projects, users, isLoadingUsers }) {
   // const { toProject, setToProject } = useContext();
+  const [showTopBtn, setShowTopBtn] = useState(false);
+  const [visibleProjects, setVisibleProjects] = useState(6);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 150) {
+        setShowTopBtn(true);
+      } else {
+        setShowTopBtn(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleLoadMore = () => {
+    setVisibleProjects((prev) => prev + 6);
+  };
+
   if (projects.length === 0)
     return (
       <p className="message">
@@ -12,18 +40,13 @@ function ProjectList({ projects, users, isLoadingUsers }) {
       </p>
     );
 
-  // צריך להוסיף
-  const handle_to_project = () => {
-    // setToProject(toProject + 5);
-  };
-
   return (
     <section>
       <p className="number-of-projects merriweather-font">
         There are {projects.length} projects to do!
       </p>
       <ul className="projects-list">
-        {projects.map((project) => (
+        {projects.slice(0, visibleProjects).map((project) => (
           <Project
             project={project}
             key={project.id}
@@ -32,9 +55,19 @@ function ProjectList({ projects, users, isLoadingUsers }) {
           />
         ))}
       </ul>
-      <button className="load-more" onClick={handle_to_project}>
-        Load more projects
-      </button>
+      {visibleProjects < projects.length && (
+        <button className="load-more" onClick={handleLoadMore}>
+          Load more projects
+        </button>
+      )}
+      <span
+        className={`material-symbols-outlined back-to-top ${
+          showTopBtn ? "show" : ""
+        }`}
+        onClick={scrollToTop}
+      >
+        arrow_circle_up
+      </span>
     </section>
   );
 }

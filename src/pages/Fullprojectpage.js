@@ -84,14 +84,14 @@ function Fullprojectpage() {
         {connected && (
           <span className="full-project-btn-span">
             <span
-              className="material-symbols-outlined"
+              className="material-symbols-outlined material-symbols-outlined-delete-edit"
               style={{ cursor: "pointer", backgroundColor: "green" }}
               onClick={handleEditClick}
             >
               edit
             </span>
             <span
-              className="material-symbols-outlined"
+              className="material-symbols-outlined material-symbols-outlined-delete-edit"
               style={{ cursor: "pointer" }}
               onClick={deleteButton}
             >

@@ -15,7 +15,6 @@ function PageNav() {
   }
   const connected = !isEmpty(currentUser);
   let userName = "";
-  console.log(1, currentUser);
   if (connected) {
     userName = (
       currentUser.first_name +
@@ -41,7 +40,6 @@ function PageNav() {
               border: "2px solid white",
             }}
           ></img>
-          <GoogleAuth />
           <span className="firstRow">
             <Link
               to="/"
@@ -79,7 +77,7 @@ function PageNav() {
         </header>
         {/* </ProjectManagerProvider> */}
       </nav>
-      {connected && <span className="welcome">Welcome {userName}</span>}
+      {connected && <span className="welcome">Welcome: {userName}</span>}
     </>
   );
 }

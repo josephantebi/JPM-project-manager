@@ -43,7 +43,7 @@ function GoogleAuth() {
           first_name: given_name,
           surname: family_name,
           email: email,
-          color: "#db2777",
+          color: "rgb(57, 154, 164)",
           created_at: convertDateToISO(createdIn),
         };
         setCurrentUser(newUserObj);
@@ -70,11 +70,24 @@ function GoogleAuth() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
+      {/* <GoogleLogin
+        onSuccess={(credentialResponse) => {
+          handleSuccess(credentialResponse);
+        }}
+        onError={() => toast.error("Error")}
+        className="google-login-button"
+      /> */}
       <GoogleLogin
         onSuccess={(credentialResponse) => {
           handleSuccess(credentialResponse);
         }}
         onError={() => toast.error("Error")}
+        theme="filled_blue" // Theme of the button: 'outline', 'filled_blue', or 'filled_black'
+        type="standard" // Type of the button: 'standard' or 'icon'
+        size="large" // Size of the button: 'small', 'medium', or 'large'
+        text="signin_with" // Text to display: 'signin_with', 'signup_with', 'continue_with', or 'signin'
+        shape="pill" // Shape of the button: 'rectangular', 'pill', 'circle', or 'square'
+        logo_alignment="center" // Logo alignment: 'left' or 'center'
       />
     </GoogleOAuthProvider>
   );

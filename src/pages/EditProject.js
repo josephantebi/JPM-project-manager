@@ -117,7 +117,7 @@ function EditProjectpage() {
           }}
         >
           <span
-            className="material-symbols-outlined"
+            className="material-symbols-outlined material-symbols-outlined-delete-edit"
             style={{ cursor: "pointer", backgroundColor: "rgb(9, 9, 94)" }}
             onClick={saveChanges}
           >

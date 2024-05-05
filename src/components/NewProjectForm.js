@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createProject } from "../services/apiProjects";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLogInUser } from "../Providers/log-in-user-provider";
 
 function NewProjectForm({ setShowForm, usersData }) {
   const [projectName, setProjectName] = useState("");
@@ -16,6 +17,7 @@ function NewProjectForm({ setShowForm, usersData }) {
   const [dueDate, setDueDate] = useState("");
   // const { addProject } = useContext(ProjectManagerContext);
   const queryClient = useQueryClient();
+  const { currentUser } = useLogInUser();
 
   const handleAddInput = () => {
     setInputs(inputs.concat([{ name: "", roles: [""] }]));
@@ -120,7 +122,8 @@ function NewProjectForm({ setShowForm, usersData }) {
         created_at: convertDateToISO(createdIn),
         due_date: dueDate,
         percent: 0,
-        posted_by: 1,
+        posted_by: currentUser.id,
+        organization: currentUser.organization,
       };
 
       mutate(newProject);
@@ -183,7 +186,7 @@ function NewProjectForm({ setShowForm, usersData }) {
                   <option value="">Choose Role</option>
                   {usersData.map((cat) => (
                     <option key={cat.id} value={cat.first_name}>
-                      {cat.first_name.toUpperCase()}
+                      {cat.first_name + " " + cat.surname}
                     </option>
                   ))}
                 </select>

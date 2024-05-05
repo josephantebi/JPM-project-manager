@@ -167,6 +167,7 @@ p {
   font-family: "Merriweather", sans-serif;
   width: 100%;
   color: white;
+  transition: transform 0.3s ease;
 }
 
 .btn-category:hover {
@@ -370,18 +371,54 @@ p {
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 50;
   color: white;
+  font-weight: 900;
+}
+.material-symbols-outlined-delete-edit {
   background-color: #a21212;
   border-radius: 10px;
   border: 2px solid white;
-  font-weight: 900;
   padding: 18px 18px 18px;
   margin-right: 5px;
   margin-bottom: 20px;
 }
 
-.material-symbols-outlined:hover {
+.material-symbols-outlined-delete-edit:hover {
   transform: scale(110%);
   transition: transform 0.3s ease;
+}
+
+.material-symbols-outlined-up {
+  color: white;
+  font-size: 48px;
+  padding: 18px 18px 18px;
+  margin-right: 5px;
+  margin-bottom: 20px;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 13px;
+  bottom: 50px; /* תוכל לשנות לפי הצורך */
+  font-size: 48px;
+  color: white;
+  cursor: pointer;
+  display: none; /* תחילה לא נראה */
+  z-index: 1000; /* יהיה מעל רכיבים אחרים */
+}
+
+.back-to-top:hover {
+  transform: scale(110%);
+  transition: transform 0.3s ease;
+}
+
+.back-to-top.show {
+  display: block; /* יהיה נראה כאשר יש צורך */
+}
+
+.expand {
+  cursor: pointer;
+  font-size: 30px;
+  color: white;
 }
 
 .project {
@@ -436,7 +473,14 @@ p {
 .project-in-name {
   font-weight: bold;
   padding: auto;
-  margin: auto 0;
+  margin-top: 8px;
+}
+
+.expand-more-text {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-right: 35px;
+  padding-left: 8px;
 }
 
 .full-project {
@@ -692,6 +736,22 @@ ul {
   color: white;
   background-color: #020d4b;
   padding: 10px 0;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh; /* Use full height of the viewport */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.login-message {
+  color: white;
+  font-size: xx-large;
+  text-align: center;
+  margin-bottom: 70px;
 }
 
 @keyframes spin {

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from "react";
-import Spinner from "../components/Spinner";
+import React, { useState } from "react";
 import "../style.css";
 
 function RoleFilter({
@@ -8,10 +7,7 @@ function RoleFilter({
   projects,
   setFilteredProjects,
   users,
-  isLoadingUsers,
 }) {
-  if (isLoadingUsers) return <Spinner />;
-
   const handleRoleClick = (roleName) => {
     setCurrentRole(roleName);
 
@@ -41,12 +37,12 @@ function RoleFilter({
           <li key={role.id} className="role">
             <button
               className={`btn btn-category ${
-                currentRole === role.first_name ? "selected" : ""
+                currentRole === role.first_name.toUpperCase() ? "selected" : ""
               }`}
               style={{ backgroundColor: role.color }}
               onClick={() => handleRoleClick(role.first_name.toUpperCase())}
             >
-              {role.first_name.toUpperCase()}
+              {role.first_name.toUpperCase() + " " + role.surname.toUpperCase()}
             </button>
           </li>
         ))}
