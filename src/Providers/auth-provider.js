@@ -43,19 +43,12 @@ function GoogleAuth() {
           first_name: given_name,
           surname: family_name,
           email: email,
-          color: "rgb(57, 154, 164)",
           created_at: convertDateToISO(createdIn),
         };
         setCurrentUser(newUserObj);
         const { data: newUser, error: insertError } = await supabase
           .from("users")
           .insert([newUserObj]);
-
-        if (insertError) {
-          console.error("Error inserting user:", insertError);
-          toast.error("Error storing user data");
-          return;
-        }
 
         setCurrentUser(newUser[0]);
         toast.success("User registered successfully");

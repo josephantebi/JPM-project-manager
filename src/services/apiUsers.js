@@ -25,6 +25,32 @@ export async function getUsersByOrganization(organization) {
   return data;
 }
 
+export async function getUsersIdByEmail(email) {
+  let { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", email)
+    .order("id");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Data could not be loaded");
+  }
+
+  return data;
+}
+
+export async function getOrganizations() {
+  let { data, error } = await supabase.from("users").select("organization");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Data could not be loaded");
+  }
+
+  return data;
+}
+
 export async function createUser(newUser) {
   const { data, error } = await supabase
     .from("users")

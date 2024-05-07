@@ -8,6 +8,7 @@ import EditProjectpage from "./pages/EditProject";
 import AboutJPM from "./pages/AboutJPM";
 import AboutMe from "./pages/AboutMe";
 import JPMvision from "./pages/JPMvision";
+import FirstLogin from "./pages/FirstLoginPage";
 
 function Router() {
   return (

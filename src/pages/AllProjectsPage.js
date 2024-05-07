@@ -9,8 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import { getUsersByOrganization } from "../services/apiUsers";
 import { getProjectsByOrganization } from "../services/apiProjects";
+import PageNav from "../components/Header";
 
-function AllProjectsPage({ connected }) {
+function AllProjectsPage() {
   const [showForm, setShowForm] = useState(false);
   const [currentRole, setCurrentRole] = useState("All");
   const [filteredProjects, setFilteredProjects] = useState([]);

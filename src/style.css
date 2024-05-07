@@ -754,6 +754,68 @@ ul {
   margin-bottom: 70px;
 }
 
+.user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.user-form-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px; /* Adjust based on your spacing preference */
+}
+
+.form-label {
+  margin-right: 8px;
+  margin-bottom: 4px;
+  color: white;
+  font-size: larger;
+}
+
+.form-color {
+  margin-right: 8px;
+  margin-top: 12px;
+  color: white;
+  font-size: larger;
+}
+
+.organization-input {
+  width: 300px; /* Adjust based on your preference */
+  font-size: medium;
+  padding-left: 5px;
+}
+
+.color-select-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Adjust based on your spacing preference */
+}
+
+.save-button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.save-button {
+  background-color: #020d4b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  transform: scale(110%);
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

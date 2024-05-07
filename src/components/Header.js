@@ -15,7 +15,7 @@ function PageNav() {
   }
   const connected = !isEmpty(currentUser);
   let userName = "";
-  if (connected) {
+  if (currentUser != null) {
     userName = (
       currentUser.first_name +
       " " +
