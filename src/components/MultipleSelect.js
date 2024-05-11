@@ -28,13 +28,13 @@ function getStyles(name, personNames, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
+
 export default function MultipleSelect({
   users,
   onSelectedNamesChange,
   selectedNames,
 }) {
   const theme = useTheme();
-  const [personNames, setPersonNames] = React.useState([]);
 
   const handleChange = (event) => {
     const {
@@ -57,7 +57,6 @@ export default function MultipleSelect({
           multiple
           value={selectedNames}
           onChange={handleChange}
-          // value={personNames}
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
           sx={{
@@ -73,33 +72,30 @@ export default function MultipleSelect({
             },
           }}
         >
-          {users.map((user) => {
-            const fullName = `${user.first_name} ${user.surname}`;
-            return (
-              <MenuItem
-                key={user.id}
-                value={fullName}
-                sx={{
-                  bgcolor: "#5066de",
-                  color: "black",
-                  "&.Mui-selected": {
-                    bgcolor: "#1c2a7d",
-                    color: "white",
-                    "&:hover": {
-                      bgcolor: "#48517e",
-                      color: "white",
-                    },
-                  },
+          {users.map((user) => (
+            <MenuItem
+              key={user.id}
+              value={user.nickname} // Use nickname as the value
+              sx={{
+                bgcolor: "#5066de",
+                color: "black",
+                "&.Mui-selected": {
+                  bgcolor: "#1c2a7d",
+                  color: "white",
                   "&:hover": {
-                    bgcolor: "#2d3878",
+                    bgcolor: "#48517e",
                     color: "white",
                   },
-                }}
-              >
-                {fullName}
-              </MenuItem>
-            );
-          })}
+                },
+                "&:hover": {
+                  bgcolor: "#2d3878",
+                  color: "white",
+                },
+              }}
+            >
+              {user.nickname}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>

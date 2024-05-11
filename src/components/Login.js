@@ -56,7 +56,6 @@ function Login() {
   if (isLoading) {
     return (
       <>
-        <p>Creating new user</p>
         <Spinner />
       </>
     );

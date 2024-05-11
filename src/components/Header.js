@@ -1,19 +1,14 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-// import { ProjectManagerProvider } from "../Providers/Project-Manager-Provider";
 import { useState } from "react";
 import "../style.css";
 import logo from "../data/jpm-logo.jpg";
-import GoogleAuth from "../Providers/auth-provider";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 
 function PageNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser } = useLogInUser();
-  function isEmpty(obj) {
-    return JSON.stringify(obj) === "{}";
-  }
-  const connected = !isEmpty(currentUser);
+  const { currentUser, connected } = useLogInUser();
+
   let userName = "";
   if (currentUser != null) {
     userName = (
@@ -26,7 +21,6 @@ function PageNav() {
   return (
     <>
       <nav>
-        {/* <ProjectManagerProvider> */}
         <header className="header merriweather-font">
           <img
             src={logo}
@@ -73,11 +67,22 @@ function PageNav() {
             >
               <span>JPM Vision</span>
             </Link>
+            {connected && (
+              <Link
+                to="/myProfile"
+                className={`my-profile ${
+                  location.pathname === "/myProfile" ? "activeLink" : ""
+                }`}
+              >
+                <span>My Profile</span>
+              </Link>
+            )}
           </span>
         </header>
-        {/* </ProjectManagerProvider> */}
       </nav>
-      {connected && <span className="welcome">Welcome: {userName}</span>}
+      {connected && (
+        <span className="welcome">Welcome: {currentUser.nickname}</span>
+      )}
     </>
   );
 }

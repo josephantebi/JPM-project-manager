@@ -1,4 +1,5 @@
 import PageNav from "../components/Header";
+import "../style.css";
 
 function JPMvision() {
   return (

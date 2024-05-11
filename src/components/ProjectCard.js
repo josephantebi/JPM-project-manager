@@ -12,9 +12,7 @@ function ProjectCard({ project, users, isLoadingUsers }) {
   if (isLoadingUsers) return <Spinner />;
 
   const findRolesByNames = (names) => {
-    return users.filter((role) =>
-      names.includes(role.first_name.toUpperCase())
-    );
+    return users.filter((role) => names.includes(role.nickname.toUpperCase()));
   };
 
   const matchedRoles = findRolesByNames(roles);

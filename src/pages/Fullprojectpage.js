@@ -12,17 +12,15 @@ import toast from "react-hot-toast";
 import Spinner from "../components/Spinner";
 
 function Fullprojectpage() {
-  // const { removeProject } = useContext(ProjectManagerContext);
   const location = useLocation();
   const { currentUser } = useLogInUser();
   const queryClient = useQueryClient();
-  function isEmpty(obj) {
-    return JSON.stringify(obj) === "{}";
-  }
-  const connected = !isEmpty(currentUser);
 
   const project = location.state?.project;
   const users = location.state?.users;
+
+  const usersProject = project.roles.allRoles;
+  const nickname = currentUser.nickname.toUpperCase();
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -59,6 +57,8 @@ function Fullprojectpage() {
     });
   };
 
+  const canEditAndDelete = usersProject.includes(nickname);
+
   return (
     <main>
       <PageNav />
@@ -81,7 +81,7 @@ function Fullprojectpage() {
         >
           X
         </button>
-        {connected && (
+        {canEditAndDelete && (
           <span className="full-project-btn-span">
             <span
               className="material-symbols-outlined material-symbols-outlined-delete-edit"

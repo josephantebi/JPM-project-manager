@@ -14,18 +14,11 @@ import AllProjectsPage from "../pages/AllProjectsPage";
 
 function FirstLogin() {
   const [organizationName, setOrganizationName] = useState("");
+  const [nickname, setNickname] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [isLoadingUser, setIsLoadingUser] = useState(false);
   const { currentUser, setCurrentUser } = useLogInUser();
   const queryClient = useQueryClient();
-
-  const handleChangeColor = (event) => {
-    setSelectedColor(event.target.value);
-  };
-
-  const handleChangeName = (event) => {
-    setOrganizationName(event.target.value);
-  };
 
   const {
     isLoading: isLoadingColors,
@@ -54,6 +47,26 @@ function FirstLogin() {
       toast.error("Error editing user");
     },
   });
+
+  const handleChangeColor = (event) => {
+    setSelectedColor(event.target.value);
+  };
+
+  const handleChangeNickname = (event) => {
+    let nicknameTemp = event.target.value;
+    nicknameTemp =
+      nicknameTemp.charAt(0).toUpperCase() +
+      nicknameTemp.slice(1).toLowerCase();
+    setNickname(nicknameTemp);
+  };
+
+  const handleChangeOrganizationName = (event) => {
+    let organizationNameTemp = event.target.value;
+    organizationNameTemp =
+      organizationNameTemp.charAt(0).toUpperCase() +
+      organizationNameTemp.slice(1).toLowerCase();
+    setOrganizationName(organizationNameTemp);
+  };
 
   const checkAndUpdateUser = async () => {
     try {
@@ -131,9 +144,11 @@ function FirstLogin() {
       color: selectedColor,
       organization: organizationName,
       created_at: currentUser.created_at,
+      nickname: nickname,
     };
     const id = currentUser.id;
     mutate({ newUser, id });
+    toast.success("User successfully created");
     setIsLoadingUser(true);
   };
 
@@ -142,13 +157,25 @@ function FirstLogin() {
     currentUser.color !== null &&
     currentUser.organization !== null
   ) {
-    toast.success("Saved successfully", { duration: 3000 });
     return <AllProjectsPage />;
   }
 
   return (
     <>
       <form className="user-form" onSubmit={handleSubmit}>
+        <div className="user-form-div">
+          <p htmlFor="organizationName" className="form-label">
+            Nickname:
+          </p>
+          <input
+            className="organization-input"
+            type="text"
+            id="organizationName"
+            placeholder=""
+            value={nickname}
+            onChange={handleChangeNickname}
+          />
+        </div>
         <div className="user-form-div">
           <p htmlFor="organizationName" className="form-label">
             Organization name:
@@ -159,7 +186,7 @@ function FirstLogin() {
             id="organizationName"
             placeholder=""
             value={organizationName}
-            onChange={handleChangeName}
+            onChange={handleChangeOrganizationName}
           />
         </div>
         <div className="color-select-wrapper">

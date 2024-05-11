@@ -7,8 +7,6 @@
 .env
 /private
 
-
-
 # testing
 /coverage
 

@@ -85,15 +85,14 @@ p {
   margin-top: -10px;
   margin-bottom: 16px;
   text-align: end;
-  font-size: 15px;
 }
 
 .filter-by-name {
   font-size: 15px;
+  width: 130px;
   color: white;
   background-color: #4e5681;
   text-align: center;
-  width: 250px;
   padding: 3px;
   border-radius: 10px;
   transition: 0.2s;
@@ -151,10 +150,27 @@ p {
   border: 2px solid white;
 }
 
+.btn-users {
+  font-family: "Merriweather", sans-serif;
+  background-color: rgb(150, 141, 230);
+  margin-top: 5px;
+  margin-bottom: 13px;
+  padding: 15px 15px 15px;
+  width: 100%;
+  color: rgb(0, 0, 0);
+  font-size: large;
+  font-weight: bold;
+}
+
+.btn-users:hover {
+  transform: scale(110%);
+}
+
 .btn-all-role {
   font-family: "Merriweather", sans-serif;
+  background-color: red;
   margin-top: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 13px;
   width: 100%;
   color: white;
 }
@@ -814,6 +830,75 @@ ul {
 
 .save-button:hover {
   transform: scale(110%);
+}
+
+.creating-new-user {
+  text-align: center;
+  color: white;
+  font-size: 24px;
+  margin-top: 30px;
+  margin-bottom: -160px;
+}
+
+.nf-container {
+  text-align: center;
+  padding: 50px;
+  font-family: Arial, sans-serif;
+}
+
+.nf-header {
+  font-size: 2.5em;
+  color: #ffffff;
+  margin-top: -20px;
+  margin-bottom: 15px;
+}
+
+.nf-text {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.nf-home-link {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.nf-home-link:hover {
+  background-color: #0056b3;
+}
+
+.nf-image {
+  max-width: 20%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.my-profile {
+  background-color: #16b04e;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 20px;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.my-profile:hover {
+  transform: scale(1.05);
+  color: black;
 }
 
 @keyframes spin {

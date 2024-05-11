@@ -9,33 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import { getUsersByOrganization } from "../services/apiUsers";
 import { getProjectsByOrganization } from "../services/apiProjects";
-import PageNav from "../components/Header";
 
 function AllProjectsPage() {
   const [showForm, setShowForm] = useState(false);
   const [currentRole, setCurrentRole] = useState("All");
   const [filteredProjects, setFilteredProjects] = useState([]);
-
-  //supabase
-  // const {
-  //   isLoading,
-  //   data: projectsData,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["projects"],
-  //   queryFn: getProjects,
-  // });
-
-  // const {
-  //   isLoading: isLoadingUsers,
-  //   data: usersData,
-  //   error: errorUsers,
-  // } = useQuery({
-  //   queryKey: ["user"],
-  //   queryFn: getUsers,
-  // });
-  // if (isLoading) return <Spinner />;
-
   const { currentUser } = useLogInUser();
   const organization = currentUser.organization;
 
@@ -60,7 +38,7 @@ function AllProjectsPage() {
 
   useEffect(() => {
     if (projectsData) {
-      setFilteredProjects(projectsData); // Assuming projectsData is the data you want to set
+      setFilteredProjects(projectsData);
     }
   }, [projectsData]);
 
@@ -75,14 +53,9 @@ function AllProjectsPage() {
         <NewProjectForm setShowForm={setShowForm} usersData={usersData} />
       )}
       <div className="sort-list-div">
-        <input
-          placeholder="Filter by Project Name / Details"
-          className="filter-by-name"
-        />
+        <input placeholder="Search" className="filter-by-name" />
       </div>
       <main className="main">
-        {/* <ProjectList projects={filteredProjects} /> */}
-
         <RoleFilter
           currentRole={currentRole}
           setCurrentRole={setCurrentRole}

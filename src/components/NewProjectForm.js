@@ -1,12 +1,11 @@
 import React, { useState, useContext } from "react";
 import "../style.css";
-// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 import { useMutation } from "@tanstack/react-query";
 import { createProject } from "../services/apiProjects";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLogInUser } from "../Providers/log-in-user-provider";
-import MultipleSelect from "./Checkmarks";
+import MultipleSelect from "./MultipleSelect";
 
 function NewProjectForm({ setShowForm, usersData }) {
   const [projectName, setProjectName] = useState("");
@@ -14,51 +13,32 @@ function NewProjectForm({ setShowForm, usersData }) {
   const projectNameLength = projectName.length;
   const projectDetailsLength = projectDetails.length;
   const [selectsRole, setSelectsRole] = useState([{ id: 0, value: "" }]);
-  // const [inputs, setInputs] = useState([{ name: "", roles: [] }]);
-  const [inputs, setInputs] = useState([{ name: "", selectedUsers: [] }]); // Added selectedUsers to store users selected for each subproject
+  const [inputs, setInputs] = useState([{ name: "", selectedUsers: [] }]);
   const [dueDate, setDueDate] = useState("");
   const queryClient = useQueryClient();
   const { currentUser } = useLogInUser();
-  const [subProjectRoles, setSubProjectRoles] = useState([]);
 
   const handleAddInput = () => {
-    // setInputs(inputs.concat([{ name: "", roles: [] }]));
-    setInputs([...inputs, { name: "", selectedUsers: [] }]);
+    setInputs([
+      ...inputs,
+      { name: "", selectedUsers: [currentUser.nickname].filter(Boolean) },
+    ]);
   };
+
+  // const handleAddInput = () => {
+  //   setInputs([...inputs, { name: "", selectedUsers: [] }]);
+  // };
 
   const handleRemoveInput = (index) => {
     const newInputs = inputs.slice();
     newInputs.splice(index, 1);
     setInputs(newInputs);
   };
-
-  // const handleAddRoleToSubProject = (index) => {
-  //   const newInputs = [...inputs];
-  //   newInputs[index].roles.push("");
-  //   setInputs(newInputs);
-  // };
-  // const handleRemoveRoleFromSubProject = (index, roleIndex) => {
-  //   const newInputs = [...inputs];
-  //   newInputs[index].roles.splice(roleIndex, 1);
-  //   setInputs(newInputs);
-  // };
-  // const handleRoleChange = (subProjectIndex, roleIndex, newValue) => {
-  //   const newInputs = [...inputs];
-  //   newInputs[subProjectIndex].roles[roleIndex] = newValue;
-  //   setInputs(newInputs);
-  // };
-
   const handleSubProjectNameChange = (event, index) => {
     const newInputs = [...inputs];
     newInputs[index].name = event.target.value;
     setInputs(newInputs);
   };
-
-  // const handleSelectedUsersChange = (selectedUsers, index) => {
-  //   const newInputs = [...inputs];
-  //   newInputs[index].selectedUsers = selectedUsers; // Update selected users for specific subproject
-  //   setInputs(newInputs);
-  // };
 
   const handleSelectedUsersChange = (selectedUsers, index) => {
     setInputs((currentInputs) => {
@@ -66,15 +46,6 @@ function NewProjectForm({ setShowForm, usersData }) {
       newInputs[index].selectedUsers = selectedUsers;
       return newInputs;
     });
-  };
-
-  const handleSelectedNames = (selectedFirstNames) => {
-    setSubProjectRoles(selectedFirstNames);
-  };
-  const handleRolesChange = (selectedRoles, index) => {
-    const newInputs = [...inputs];
-    newInputs[index].roles = selectedRoles;
-    setInputs(newInputs);
   };
 
   const { mutate, isLoading } = useMutation({
@@ -109,20 +80,22 @@ function NewProjectForm({ setShowForm, usersData }) {
       const allInputs = inputs.map((input, index) => ({
         id: index + 1,
         subProjectName: input.name,
-        subProjectRoles: input.selectedUsers.map((name) => name.split(" ")[0]),
+        // subProjectRoles: input.selectedUsers.map((name) => name.split(" ")[0]),
+        subProjectRoles: input.selectedUsers,
         subProjectPercent: "0",
       }));
 
-      const allRoles = Array.from(
-        new Set(
-          allInputs.flatMap(
-            (subProject) =>
-              subProject.subProjectRoles.map((role) => role.toUpperCase()) // Convert each role to uppercase
-          )
+      const allRolesSet = new Set(
+        allInputs.flatMap((subProject) =>
+          subProject.subProjectRoles.map((role) => role.toUpperCase())
         )
       );
 
-      console.log("Submitting with subproject details:", inputs); // Check the state at submit time
+      if (currentUser.nickname) {
+        allRolesSet.add(currentUser.nickname.toUpperCase());
+      }
+
+      const allRoles = Array.from(allRolesSet);
 
       function convertDateToISO(dateString) {
         const parts = dateString.split(".");
@@ -203,50 +176,8 @@ function NewProjectForm({ setShowForm, usersData }) {
             selectedNames={input.selectedUsers}
             onSelectedNamesChange={(users) =>
               handleSelectedUsersChange(users, index)
-            } // selectedNames={input.roles}
-            // onSelectedNamesChange={(selectedNames) =>
-            //   handleRolesChange(selectedNames, index)
-            // }
+            }
           />
-          {/* 
-          <div className="roles-selection-container">
-            {input.roles.map((role, roleIndex) => (
-              <div key={roleIndex} className="role-selection">
-                <select
-                  className="project-form-role"
-                  value={role}
-                  onChange={(e) =>
-                    handleRoleChange(index, roleIndex, e.target.value)
-                  }
-                >
-                  <option value="">Choose Role</option>
-                  {usersData.map((cat) => (
-                    <option key={cat.id} value={cat.first_name}>
-                      {cat.first_name + " " + cat.surname}
-                    </option>
-                  ))}
-                </select>
-                {input.roles.length > 1 && (
-                  <button
-                    className="role-btn remove-role-btn"
-                    type="button"
-                    onClick={() =>
-                      handleRemoveRoleFromSubProject(index, roleIndex)
-                    }
-                  >
-                    Remove Role
-                  </button>
-                )}
-              </div>
-            ))}
-            <button
-              className="role-btn add-role-btn"
-              type="button"
-              onClick={() => handleAddRoleToSubProject(index)}
-            >
-              Add Role
-            </button>
-          </div> */}
           {inputs.length > 1 && (
             <button
               className="role-btn remove-subproject-btn"

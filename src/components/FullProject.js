@@ -79,18 +79,21 @@ function FullProject({ project, users }) {
   }
 
   const postedByDetails = getUserById(posted_by);
-  const fullName =
-    postedByDetails.first_name.charAt(0).toUpperCase() +
-    postedByDetails.first_name.slice(1).toLowerCase() +
-    " " +
-    postedByDetails.surname.charAt(0).toUpperCase() +
-    postedByDetails.surname.slice(1).toLowerCase();
+
+  // const fullName =
+  //   postedByDetails.first_name.charAt(0).toUpperCase() +
+  //   postedByDetails.first_name.slice(1).toLowerCase() +
+  //   " " +
+  //   postedByDetails.surname.charAt(0).toUpperCase() +
+  //   postedByDetails.surname.slice(1).toLowerCase();
+
+  const nickname = postedByDetails.nickname;
 
   return (
     <div className="project full-project">
       <span>
         <div className="merriweather-font created-by">
-          Project created by: {fullName}
+          Project created by: {nickname}
         </div>
         <div className="merriweather-font">Project's name:</div>
         <div className="project-name">{project_name}</div>

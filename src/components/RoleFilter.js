@@ -8,6 +8,8 @@ function RoleFilter({
   setFilteredProjects,
   users,
 }) {
+  const [showRoles, setShowRoles] = useState(false);
+
   const handleRoleClick = (roleName) => {
     setCurrentRole(roleName);
 
@@ -22,32 +24,47 @@ function RoleFilter({
   };
 
   return (
-    <aside>
-      <ul>
-        <li className="style">
-          <button
-            className="btn btn-all-role"
-            style={{ backgroundColor: "red" }}
-            onClick={() => handleRoleClick("All")}
-          >
-            All
-          </button>
-        </li>
-        {users.map((role) => (
-          <li key={role.id} className="role">
+    <>
+      <aside>
+        <ul>
+          <li className="style">
             <button
-              className={`btn btn-category ${
-                currentRole === role.first_name.toUpperCase() ? "selected" : ""
-              }`}
-              style={{ backgroundColor: role.color }}
-              onClick={() => handleRoleClick(role.first_name.toUpperCase())}
+              className="btn btn-users"
+              onClick={() => setShowRoles(!showRoles)}
             >
-              {role.first_name.toUpperCase() + " " + role.surname.toUpperCase()}
+              {showRoles ? "Hide Users" : "Filter by User Name"}
             </button>
           </li>
-        ))}
-      </ul>
-    </aside>
+          {showRoles && (
+            <>
+              <li className="role">
+                <button
+                  className={`btn btn-all-role ${
+                    currentRole === "All" ? "selected" : ""
+                  }`}
+                  onClick={() => handleRoleClick("All")}
+                >
+                  All
+                </button>
+              </li>
+              {users.map((role) => (
+                <li key={role.id} className="role">
+                  <button
+                    className={`btn btn-category ${
+                      currentRole === role.nickname ? "selected" : ""
+                    }`}
+                    style={{ backgroundColor: role.color }}
+                    onClick={() => handleRoleClick(role.nickname)}
+                  >
+                    {role.nickname}
+                  </button>
+                </li>
+              ))}
+            </>
+          )}
+        </ul>
+      </aside>
+    </>
   );
 }
 
