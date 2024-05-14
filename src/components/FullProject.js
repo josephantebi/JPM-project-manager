@@ -28,9 +28,7 @@ function FullProject({ project, users }) {
   const date_created_at = formatDate(created_at);
 
   const findRolesByNames = (names) => {
-    return users.filter((role) =>
-      names.includes(role.first_name.toUpperCase())
-    );
+    return users.filter((role) => names.includes(role.nickname.toUpperCase()));
   };
   const matchedRoles = findRolesByNames(roles);
 
@@ -51,7 +49,7 @@ function FullProject({ project, users }) {
     // Map through the array and add the color by finding the corresponding user
     const enhancedRolesArray = rolesArray.map((roleObj) => {
       const user = users.find(
-        (user) => user.first_name.toUpperCase() === roleObj.name.toUpperCase()
+        (user) => user.nickname.toUpperCase() === roleObj.name.toUpperCase()
       );
       return {
         ...roleObj,
@@ -87,13 +85,13 @@ function FullProject({ project, users }) {
   //   postedByDetails.surname.charAt(0).toUpperCase() +
   //   postedByDetails.surname.slice(1).toLowerCase();
 
-  const nickname = postedByDetails.nickname;
+  const postByNickname = postedByDetails.nickname;
 
   return (
     <div className="project full-project">
       <span>
         <div className="merriweather-font created-by">
-          Project created by: {nickname}
+          Project created by: {postByNickname}
         </div>
         <div className="merriweather-font">Project's name:</div>
         <div className="project-name">{project_name}</div>
@@ -121,7 +119,7 @@ function FullProject({ project, users }) {
                   {subProject.subProjectRoles.map((roleName, index) => {
                     const normalizedRoleName = roleName.toUpperCase();
                     const role = users.find(
-                      (r) => r.first_name.toUpperCase() === normalizedRoleName
+                      (r) => r.nickname.toUpperCase() === normalizedRoleName
                     );
                     return (
                       <React.Fragment key={index}>
@@ -131,7 +129,7 @@ function FullProject({ project, users }) {
                             color: role ? role.color : "inherit",
                           }}
                         >
-                          {roleName + " " + role.surname[0].toUpperCase() + "."}
+                          {roleName}
                         </span>
                         {index < subProject.subProjectRoles.length - 1 && (
                           <span style={{ color: "#FFFFFF" }}>, </span>
@@ -198,10 +196,7 @@ function FullProject({ project, users }) {
                   className="in-project-role"
                   style={{ backgroundColor: cat.color || "#ccc" }}
                 >
-                  {cat.first_name.toUpperCase() +
-                    " " +
-                    cat.surname[0].toUpperCase() +
-                    "."}
+                  {cat.nickname.toUpperCase()}
                 </div>
               </li>
             ))}

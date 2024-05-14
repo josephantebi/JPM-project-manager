@@ -67,6 +67,7 @@ function EditProjectpage() {
     due_date: dueDate,
     percent: averagePercent,
     posted_by: foundProject.posted_by,
+    organization: foundProject.organization,
   };
 
   const { mutate, isLoading } = useMutation({

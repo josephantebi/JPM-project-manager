@@ -28,6 +28,21 @@ export async function getProjectsByOrganization(organization) {
   return data;
 }
 
+export async function getProjectsByPostedBy(posted_by) {
+  let { data, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("posted_by", posted_by)
+    .order("id");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Data could not be loaded");
+  }
+
+  return data;
+}
+
 export async function createProject(newProject) {
   const { data, error } = await supabase.from("projects").insert([newProject]);
   if (error) {

@@ -145,6 +145,7 @@ function FirstLogin() {
       organization: organizationName,
       created_at: currentUser.created_at,
       nickname: nickname,
+      admin: true,
     };
     const id = currentUser.id;
     mutate({ newUser, id });

@@ -11,6 +11,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { editUser } from "../services/apiUsers";
 import toast from "react-hot-toast";
 import "../style.css";
+import { getProjectsByOrganization } from "../services/apiProjects";
+import { editProject } from "../services/apiProjects";
+import { getProjectsByPostedBy } from "../services/apiProjects";
 
 function MyProfile() {
   const { currentUser, setCurrentUser } = useLogInUser();
@@ -19,7 +22,19 @@ function MyProfile() {
   const [nickname, setNickname] = useState(currentUser.nickname || "");
   const [selectedColor, setSelectedColor] = useState(currentUser.color || "");
   const queryClient = useQueryClient();
+  const queryClientEdit = useQueryClient();
   const navigate = useNavigate();
+  const organization = currentUser.organization;
+
+  //supabase
+  const {
+    isLoading: isLoadingData,
+    data: projectsData,
+    error,
+  } = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjectsByOrganization(organization),
+  });
 
   const {
     isLoading: isLoadingColors,
@@ -70,6 +85,80 @@ function MyProfile() {
     },
   });
 
+  const { mutate: mutateProject, isLoading: isLoadingProject } = useMutation({
+    mutationFn: ({ editedProject, id }) => editProject(editedProject, id),
+    onSuccess: () => {
+      queryClientEdit.invalidateQueries({ queryKey: ["projects"] });
+    },
+    onError: (error) => {
+      toast.error("Error editing projects");
+    },
+  });
+
+  // function updatePostBy(oldName, newName) {
+  //   const {
+  //     isLoading: isLoadingPostBy,
+  //     data: postByData,
+  //     error: errorPostBy,
+  //   } = useQuery({
+  //     queryKey: ["projects"],
+  //     queryFn: () => getProjectsByPostedBy(oldName),
+  //   });
+  //   if (isLoadingPostBy) {
+  //     return <Spinner />;
+  //   }
+  //   postByData.forEach((object) => {
+  //     const newProject = {
+  //       project_name: object.project_name,
+  //       project_details: object.project_details,
+  //       sub_projects: object.sub_projects,
+  //       roles: object.roles,
+  //       created_at: object.created_at,
+  //       due_date: object.due_date,
+  //       percent: object.percent,
+  //       posted_by: newName,
+  //       organization: object.organization,
+  //     };
+  //     mutateProject({ editedProject: object, id: object.id });
+  //   });
+  // }
+
+  function updateRolesByName(oldName, newName, objectsList) {
+    const lowerOldName = oldName.toLowerCase();
+
+    objectsList.forEach((object) => {
+      let isRolesChanged = false;
+      let isSubProjectsChanged = false;
+
+      if (object.roles && object.roles.allRoles) {
+        const newRoles = object.roles.allRoles.map((role) => {
+          if (role.toLowerCase() === lowerOldName) {
+            isRolesChanged = true;
+            return newName;
+          }
+          return role;
+        });
+        if (isRolesChanged) object.roles.allRoles = newRoles;
+      }
+      if (object.sub_projects && object.sub_projects.allSubProjects) {
+        object.sub_projects.allSubProjects.forEach((subProject) => {
+          const newSubProjectRoles = subProject.subProjectRoles.map((role) => {
+            if (role.toLowerCase() === lowerOldName) {
+              isSubProjectsChanged = true;
+              return newName;
+            }
+            return role;
+          });
+          if (isSubProjectsChanged)
+            subProject.subProjectRoles = newSubProjectRoles;
+        });
+      }
+      if (isRolesChanged || isSubProjectsChanged) {
+        mutateProject({ editedProject: object, id: object.id });
+      }
+    });
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -82,6 +171,9 @@ function MyProfile() {
       created_at: currentUser.created_at,
       nickname: nickname,
     };
+
+    updateRolesByName(currentUser.nickname, nickname, projectsData);
+    // updatePostBy(currentUser.nickname, nickname);
     const id = currentUser.id;
     setCurrentUser(newUser);
     mutate({ newUser, id });
@@ -146,7 +238,7 @@ function MyProfile() {
         <div className="save-button-wrapper">
           <button className="save-button">Save</button>
         </div>
-      </form>{" "}
+      </form>
     </>
   );
 }

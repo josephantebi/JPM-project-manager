@@ -120,7 +120,7 @@ function NewProjectForm({ setShowForm, usersData }) {
         created_at: convertDateToISO(createdIn),
         due_date: dueDate,
         percent: 0,
-        posted_by: currentUser.id,
+        posted_by: currentUser.nickname,
         organization: currentUser.organization,
       };
 
