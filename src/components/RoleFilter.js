@@ -35,14 +35,14 @@ function RoleFilter({
               className="btn btn-users"
               onClick={() => setShowRoles(!showRoles)}
             >
-              {showRoles ? "Hide Users" : "Filter by User Name"}
+              {showRoles ? "Hide filter by User Name" : "Filter by User Name"}
             </button>
           </li>
           {showRoles && (
             <>
               <li className="role">
                 <button
-                  className={`btn btn-all-role ${
+                  className={`btn btn-all-role btn-category ${
                     currentRole === "All" ? "selected" : ""
                   }`}
                   onClick={() => handleRoleClick("All")}

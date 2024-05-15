@@ -186,7 +186,7 @@ function MyProfile() {
       <form className="user-form" onSubmit={handleSubmit}>
         <div className="user-form-div">
           <p htmlFor="organizationName" className="form-label">
-            Name:
+            First name:
           </p>
           <input
             className="organization-input"
