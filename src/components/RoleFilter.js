@@ -11,13 +11,16 @@ function RoleFilter({
   const [showRoles, setShowRoles] = useState(false);
 
   const handleRoleClick = (roleName) => {
+    const lowerRoleName = roleName.toLowerCase();
     setCurrentRole(roleName);
 
     if (roleName === "All") {
       setFilteredProjects(projects);
     } else {
       const filtered = projects.filter((project) =>
-        project.roles.allRoles.includes(roleName)
+        project.roles.allRoles.some(
+          (role) => role.toLowerCase() === lowerRoleName
+        )
       );
       setFilteredProjects(filtered);
     }

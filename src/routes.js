@@ -3,6 +3,7 @@ import "./style.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Fullprojectpage from "./pages/Fullprojectpage";
+import AdminPage from "./pages/AdminPage";
 import ProjectList from "./components/ProjectList";
 import EditProjectpage from "./pages/EditProject";
 import AboutJPM from "./pages/AboutJPM";
@@ -21,12 +22,14 @@ function Router() {
         <Route path="aboutJPM" element={<AboutJPM />} />
         <Route path="aboutMe" element={<AboutMe />} />
         <Route path="JPMvision" element={<JPMvision />} />
-        {/* <Route path="projects" element={<ProjectList />} /> */}
         <Route path="projects" element={<Navigate to="/" replace />} />
-        {/* <Route path="myProfile" element={<MyProfile />} /> */}
         <Route
           path="myProfile"
           element={connected ? <MyProfile /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="adminPage"
+          element={connected ? <AdminPage /> : <Navigate to="/" replace />}
         />
         <Route
           path="projects/:id"

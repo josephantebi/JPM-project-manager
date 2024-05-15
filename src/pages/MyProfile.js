@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import "../style.css";
 import { getProjectsByOrganization } from "../services/apiProjects";
 import { editProject } from "../services/apiProjects";
-import { getProjectsByPostedBy } from "../services/apiProjects";
+import { getNicknames } from "../services/apiUsers";
 
 function MyProfile() {
   const { currentUser, setCurrentUser } = useLogInUser();
@@ -44,6 +44,17 @@ function MyProfile() {
     queryKey: ["colors"],
     queryFn: getColors,
   });
+
+  const {
+    isLoading: isLoadingUsers,
+    data: usersData,
+    error: errorUsers,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: getNicknames,
+  });
+
+  //supabase end
 
   const handleChangeColor = (event) => {
     setSelectedColor(event.target.value);
@@ -95,34 +106,6 @@ function MyProfile() {
     },
   });
 
-  // function updatePostBy(oldName, newName) {
-  //   const {
-  //     isLoading: isLoadingPostBy,
-  //     data: postByData,
-  //     error: errorPostBy,
-  //   } = useQuery({
-  //     queryKey: ["projects"],
-  //     queryFn: () => getProjectsByPostedBy(oldName),
-  //   });
-  //   if (isLoadingPostBy) {
-  //     return <Spinner />;
-  //   }
-  //   postByData.forEach((object) => {
-  //     const newProject = {
-  //       project_name: object.project_name,
-  //       project_details: object.project_details,
-  //       sub_projects: object.sub_projects,
-  //       roles: object.roles,
-  //       created_at: object.created_at,
-  //       due_date: object.due_date,
-  //       percent: object.percent,
-  //       posted_by: newName,
-  //       organization: object.organization,
-  //     };
-  //     mutateProject({ editedProject: object, id: object.id });
-  //   });
-  // }
-
   function updateRolesByName(oldName, newName, objectsList) {
     const lowerOldName = oldName.toLowerCase();
 
@@ -156,11 +139,26 @@ function MyProfile() {
       if (isRolesChanged || isSubProjectsChanged) {
         mutateProject({ editedProject: object, id: object.id });
       }
+      if (object.posted_by === oldName) {
+        object.posted_by = newName;
+        mutateProject({ editedProject: object, id: object.id });
+      }
     });
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const nicknameExists = usersData.some(
+      (org) => org.nickname.toLowerCase() === nickname.toLowerCase()
+    );
+
+    if (nicknameExists && nickname !== currentUser.nickname) {
+      toast.error(
+        "Nickname name is already taken. Please choose another nickname."
+      );
+      return;
+    }
 
     const newUser = {
       first_name: firstName,
@@ -173,13 +171,12 @@ function MyProfile() {
     };
 
     updateRolesByName(currentUser.nickname, nickname, projectsData);
-    // updatePostBy(currentUser.nickname, nickname);
     const id = currentUser.id;
     setCurrentUser(newUser);
     mutate({ newUser, id });
   };
 
-  if (isLoadingColors || isLoading) {
+  if (isLoadingColors || isLoadingData || isLoadingUsers) {
     return <Spinner />;
   }
 

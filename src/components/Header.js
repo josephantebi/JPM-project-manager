@@ -9,15 +9,6 @@ function PageNav() {
   const location = useLocation();
   const { currentUser, connected } = useLogInUser();
 
-  let userName = "";
-  if (currentUser != null) {
-    userName = (
-      currentUser.first_name +
-      " " +
-      currentUser.surname
-    ).toUpperCase();
-  }
-
   return (
     <>
       <nav>
@@ -67,6 +58,16 @@ function PageNav() {
             >
               <span>JPM Vision</span>
             </Link>
+            {connected && currentUser.admin && (
+              <Link
+                to="/adminPage"
+                className={`firstRowLink ${
+                  location.pathname === "/adminPage" ? "activeLink" : ""
+                }`}
+              >
+                <span>Admin</span>
+              </Link>
+            )}
             {connected && (
               <Link
                 to="/myProfile"

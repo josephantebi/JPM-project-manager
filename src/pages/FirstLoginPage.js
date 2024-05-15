@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import supabase from "../services/supabase";
+import { getNicknames } from "../services/apiUsers";
 import AllProjectsPage from "../pages/AllProjectsPage";
 
 function FirstLogin() {
@@ -19,6 +20,7 @@ function FirstLogin() {
   const [isLoadingUser, setIsLoadingUser] = useState(false);
   const { currentUser, setCurrentUser } = useLogInUser();
   const queryClient = useQueryClient();
+  const organization = currentUser.organization;
 
   const {
     isLoading: isLoadingColors,
@@ -36,6 +38,15 @@ function FirstLogin() {
   } = useQuery({
     queryKey: ["organizations"],
     queryFn: getOrganizations,
+  });
+
+  const {
+    isLoading: isLoadingUsers,
+    data: usersData,
+    error: errorUsers,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: getNicknames,
   });
 
   const { mutate, isLoading } = useMutation({
@@ -81,7 +92,6 @@ function FirstLogin() {
       }
       if (existingUser) {
         setCurrentUser(existingUser);
-        // Check if both color and organization are not null
         if (existingUser.color !== null && existingUser.organization !== null) {
           setIsLoadingUser(false);
         }
@@ -114,25 +124,42 @@ function FirstLogin() {
     return () => clearInterval(intervalId);
   }, []);
 
-  if (isLoadingColors || isLoadingOrganizations || isLoading || isLoadingUser) {
+  if (
+    isLoadingColors ||
+    isLoadingOrganizations ||
+    isLoading ||
+    isLoadingUser ||
+    isLoadingUsers
+  ) {
     return <Spinner />;
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!organizationName || !selectedColor) {
+    if (!organizationName || !selectedColor || !nickname) {
       toast.error("Please complete all required fields.");
       return;
     }
     // Check if the organization name already exists
     const nameExists = organizations.some(
-      (org) => org.organization === organizationName.toLowerCase()
+      (org) => org.organization.toLowerCase() === organizationName.toLowerCase()
     );
 
     if (nameExists) {
       toast.error(
         "Organization name is already taken. Please choose another name."
+      );
+      return;
+    }
+
+    const nicknameExists = usersData.some(
+      (org) => org.nickname.toLowerCase() === nickname.toLowerCase()
+    );
+
+    if (nicknameExists) {
+      toast.error(
+        "Nickname name is already taken. Please choose another nickname."
       );
       return;
     }

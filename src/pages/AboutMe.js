@@ -1,6 +1,7 @@
 import PageNav from "../components/Header";
 import qr from "../data/qr.png";
 import linkedinLogo from "../data/linkedin-logo.avif";
+import "../style.css";
 
 function AboutMe() {
   return (

@@ -901,6 +901,30 @@ ul {
   color: black;
 }
 
+.user {
+  font-size: 20px;
+  line-height: 1.4;
+  color: white;
+  padding: 8px 10px;
+  letter-spacing: 1.5px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.centered-user-card-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.expand-user-card {
+  display: flex;
+  justify-content: center;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

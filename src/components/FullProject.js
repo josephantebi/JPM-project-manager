@@ -27,9 +27,12 @@ function FullProject({ project, users }) {
   }
   const date_created_at = formatDate(created_at);
 
-  const findRolesByNames = (names) => {
-    return users.filter((role) => names.includes(role.nickname.toUpperCase()));
-  };
+  function findRolesByNames(names) {
+    const lowerCaseNames = names.map((name) => name.toLowerCase());
+    return users.filter((user) =>
+      lowerCaseNames.includes(user.nickname.toLowerCase())
+    );
+  }
   const matchedRoles = findRolesByNames(roles);
 
   const roleCount = sub_projects
@@ -71,20 +74,14 @@ function FullProject({ project, users }) {
     };
   });
 
-  function getUserById(id) {
-    const user = users.find((user) => user.id === id);
+  function getUserById(userNickname) {
+    const user = users.find(
+      (user) => user.nickname.toLowerCase() === userNickname.toLowerCase()
+    );
     return user ? user : null;
   }
 
   const postedByDetails = getUserById(posted_by);
-
-  // const fullName =
-  //   postedByDetails.first_name.charAt(0).toUpperCase() +
-  //   postedByDetails.first_name.slice(1).toLowerCase() +
-  //   " " +
-  //   postedByDetails.surname.charAt(0).toUpperCase() +
-  //   postedByDetails.surname.slice(1).toLowerCase();
-
   const postByNickname = postedByDetails.nickname;
 
   return (

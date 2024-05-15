@@ -10,11 +10,16 @@ function ProjectCard({ project, users, isLoadingUsers }) {
   const [isTextVisible, setIsTextVisible] = useState(false);
 
   if (isLoadingUsers) return <Spinner />;
+  // const findRolesByNames = (names) => {
+  //   return users.filter((user) => names.includes(user.nickname));
+  // };
 
-  const findRolesByNames = (names) => {
-    return users.filter((role) => names.includes(role.nickname.toUpperCase()));
-  };
-
+  function findRolesByNames(names) {
+    const lowerCaseNames = names.map((name) => name.toLowerCase());
+    return users.filter((user) =>
+      lowerCaseNames.includes(user.nickname.toLowerCase())
+    );
+  }
   const matchedRoles = findRolesByNames(roles);
 
   // date
@@ -85,9 +90,6 @@ function ProjectCard({ project, users, isLoadingUsers }) {
           Show full project
         </Link>
       </span>
-      {/* <span class="material-symbols-outlined expand">expand_more</span>
-      <span class="material-symbols-outlined">expand_less</span>
-      <p>text:</p> */}
     </span>
   );
 }

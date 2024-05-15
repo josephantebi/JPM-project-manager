@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import { getUsersByOrganization } from "../services/apiUsers";
 import { getProjectsByOrganization } from "../services/apiProjects";
+// import { DataContext } from "../Providers/data-provider";
 
 function AllProjectsPage() {
   const [showForm, setShowForm] = useState(false);
@@ -16,10 +17,9 @@ function AllProjectsPage() {
   const [filteredProjects, setFilteredProjects] = useState([]);
   const { currentUser } = useLogInUser();
   const organization = currentUser.organization;
-
   //supabase
   const {
-    isLoading,
+    isLoading: isLoadingProjects,
     data: projectsData,
     error,
   } = useQuery({
@@ -42,8 +42,7 @@ function AllProjectsPage() {
     }
   }, [projectsData]);
 
-  if (isLoading) return <Spinner />;
-  if (isLoadingUsers) return <Spinner />;
+  if (isLoadingProjects || isLoadingUsers) return <Spinner />;
   //supabase end
 
   return (
@@ -69,6 +68,7 @@ function AllProjectsPage() {
           projects={filteredProjects}
           users={usersData}
           isLoadingUsers={isLoadingUsers}
+          isLoadingProjects={isLoadingProjects}
         />
       </main>
     </>

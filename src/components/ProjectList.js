@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../style.css";
 import Project from "./Project";
 
-function ProjectList({ projects, users, isLoadingUsers }) {
-  // const { toProject, setToProject } = useContext();
+function ProjectList({ projects, users, isLoadingUsers, isLoadingProjects }) {
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [visibleProjects, setVisibleProjects] = useState(6);
 

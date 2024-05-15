@@ -57,7 +57,10 @@ function Fullprojectpage() {
     });
   };
 
-  const canEditAndDelete = usersProject.includes(nickname);
+  const canEditAndDelete =
+    usersProject
+      .map((role) => role.toLowerCase())
+      .includes(nickname.toLowerCase()) || currentUser.admin;
 
   return (
     <main>

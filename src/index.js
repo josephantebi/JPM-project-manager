@@ -1,19 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-// import { ProjectManagerProvider } from "./Providers/Project-Manager-Provider";
-// import { UserProvider } from "./Providers/User-Provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LogInUserProvider } from "./Providers/log-in-user-provider";
+// import { DataProvider } from "./Providers/data-provider";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <ProjectManagerProvider>
-      <UserProvider> */}
     <LogInUserProvider>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        {/* <DataProvider> */}
+        <App />
+        {/* </DataProvider> */}
+      </QueryClientProvider>
     </LogInUserProvider>
-    {/* </UserProvider>
-    </ProjectManagerProvider> */}
   </React.StrictMode>
 );
