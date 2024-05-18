@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import { getOrganizations } from "../services/apiUsers";
 import toast from "react-hot-toast";
-import { editUser, getUsersIdByEmail } from "../services/apiUsers";
+import { editUser } from "../services/apiUsers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useLogInUser } from "../Providers/log-in-user-provider";
@@ -20,7 +20,6 @@ function FirstLogin() {
   const [isLoadingUser, setIsLoadingUser] = useState(false);
   const { currentUser, setCurrentUser } = useLogInUser();
   const queryClient = useQueryClient();
-  const organization = currentUser.organization;
 
   const {
     isLoading: isLoadingColors,
@@ -141,9 +140,11 @@ function FirstLogin() {
       toast.error("Please complete all required fields.");
       return;
     }
-    // Check if the organization name already exists
+
     const nameExists = organizations.some(
-      (org) => org.organization.toLowerCase() === organizationName.toLowerCase()
+      (org) =>
+        org.organization &&
+        org.organization.toLowerCase() === organizationName.toLowerCase()
     );
 
     if (nameExists) {
@@ -154,13 +155,12 @@ function FirstLogin() {
     }
 
     const nicknameExists = usersData.some(
-      (org) => org.nickname.toLowerCase() === nickname.toLowerCase()
+      (org) =>
+        org.nickname && org.nickname.toLowerCase() === nickname.toLowerCase()
     );
 
     if (nicknameExists) {
-      toast.error(
-        "Nickname name is already taken. Please choose another nickname."
-      );
+      toast.error("Nickname is already taken. Please choose another nickname.");
       return;
     }
 
@@ -173,6 +173,7 @@ function FirstLogin() {
       created_at: currentUser.created_at,
       nickname: nickname,
       admin: true,
+      deleted_user: false,
     };
     const id = currentUser.id;
     mutate({ newUser, id });

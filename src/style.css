@@ -912,6 +912,10 @@ ul {
   width: 100%;
 }
 
+.alert-text {
+  color: #ff0000;
+}
+
 .centered-user-card-div {
   display: flex;
   flex-direction: column;

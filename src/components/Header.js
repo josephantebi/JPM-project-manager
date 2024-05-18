@@ -1,13 +1,18 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { googleLogout } from "@react-oauth/google";
 import "../style.css";
 import logo from "../data/jpm-logo.jpg";
 import { useLogInUser } from "../Providers/log-in-user-provider";
+import toast from "react-hot-toast";
 
 function PageNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, connected } = useLogInUser();
+  const { currentUser, connected, setCurrentUser } = useLogInUser();
+  const handleLogout = () => {
+    googleLogout();
+    window.location.reload();
+  };
 
   return (
     <>
@@ -77,6 +82,17 @@ function PageNav() {
               >
                 <span>My Profile</span>
               </Link>
+            )}
+            {connected && (
+              <button
+                onClick={handleLogout}
+                className="my-profile"
+                style={{ backgroundColor: "black" }}
+                onMouseOver={(e) => (e.target.style.color = "red")}
+                onMouseOut={(e) => (e.target.style.color = "")}
+              >
+                Logout
+              </button>
             )}
           </span>
         </header>

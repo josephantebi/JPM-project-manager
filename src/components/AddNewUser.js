@@ -14,16 +14,6 @@ function AddNewUser() {
   const { currentUser } = useLogInUser();
   const queryClient = useQueryClient();
 
-  // const { mutate } = useMutation(editUser, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries(['users']);
-  //     toast.success("User added successfully!");
-  //   },
-  //   onError: (error) => {
-  //     toast.error("Error editing user: " + error.message);
-  //   },
-  // });
-
   const { mutate } = useMutation({
     mutationFn: ({ newUser, id }) => editUser(newUser, id),
     onSuccess: () => {
@@ -69,10 +59,10 @@ function AddNewUser() {
               created_at: existingUser.created_at,
               nickname: existingUser.nickname,
               admin: false,
+              delete_organization_permission: false,
             };
             const id = existingUser.id;
             mutate({ newUser, id });
-            // mutate({ ...existingUser, organization: "YourOrganizationId" });
           } else {
             toast.error("User is already in another organization");
           }

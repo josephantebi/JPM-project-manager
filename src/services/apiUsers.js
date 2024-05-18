@@ -62,6 +62,21 @@ export async function getNicknames() {
   return data;
 }
 
+export async function getNicknamesByOrganization(organization) {
+  let { data, error } = await supabase
+    .from("users")
+    .select("nickname")
+    .eq("organization", organization)
+    .order("id");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Data could not be loaded");
+  }
+
+  return data;
+}
+
 export async function createUser(newUser) {
   const { data, error } = await supabase
     .from("users")

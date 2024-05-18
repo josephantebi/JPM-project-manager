@@ -1,36 +1,29 @@
 import React, { useState } from "react";
 import PageNav from "../components/Header";
-import { useQuery } from "@tanstack/react-query";
 import { useLogInUser } from "../Providers/log-in-user-provider";
-import { getUsersByOrganization } from "../services/apiUsers";
+import { useDataProvider } from "../Providers/DataProvider";
 import AddNewUser from "../components/AddNewUser";
-import Spinner from "../components/Spinner";
 import UserList from "../components/UserList";
 import "../style.css";
 
 function AdminPage() {
   const { currentUser } = useLogInUser();
-  const organization = currentUser.organization;
-  const [currentView, setCurrentView] = useState(null); // No default view
+  const { usersDataProvider } = useDataProvider();
+  const [currentView, setCurrentView] = useState(null);
 
-  const {
-    isLoading: isLoadingUsers,
-    data: usersData,
-    error: errorUsers,
-  } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getUsersByOrganization(organization),
-  });
-
-  if (isLoadingUsers) return <Spinner />;
-
-  const sortedUsers = usersData?.sort((a, b) => {
-    if (a.nickname === currentUser.nickname) return -1; // Current user goes first
-    if (b.nickname === currentUser.nickname) return 1;
-    if (a.admin && !b.admin) return -1; // Admins go next
-    if (!a.admin && b.admin) return 1;
-    return a.nickname.localeCompare(b.nickname); // Finally, sort alphabetically by nickname
-  });
+  // const sortedUsers = usersDataProvider?.sort((a, b) => {
+  //   // Move deleted users to the end
+  //   if (a.deleted_user && !b.deleted_user) return 1;
+  //   if (!a.deleted_user && b.deleted_user) return -1;
+  //   // Prioritize the current user
+  //   if (a.nickname === currentUser.nickname) return -1;
+  //   if (b.nickname === currentUser.nickname) return 1;
+  //   // Sort admins next
+  //   if (a.admin && !b.admin) return -1;
+  //   if (!a.admin && b.admin) return 1;
+  //   // Finally, sort alphabetically by nickname
+  //   return a.nickname.localeCompare(b.nickname);
+  // });
 
   const handleShowUsers = () => setCurrentView("users");
   const handleAddNewUser = () => setCurrentView("addUser");
@@ -40,7 +33,7 @@ function AdminPage() {
       <PageNav />
       <button onClick={handleShowUsers}>Users</button>
       <button onClick={handleAddNewUser}>Add new user to organization</button>
-      {currentView === "users" && <UserList usersData={sortedUsers} />}
+      {currentView === "users" && <UserList usersData={usersDataProvider} />}
       {currentView === "addUser" && <AddNewUser />}
     </>
   );

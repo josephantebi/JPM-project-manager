@@ -1,4 +1,8 @@
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import {
+  GoogleLogin,
+  GoogleOAuthProvider,
+  googleLogout,
+} from "@react-oauth/google";
 import { useState, createContext } from "react";
 import toast from "react-hot-toast";
 import { useLogInUser } from "../Providers/log-in-user-provider";
@@ -44,6 +48,12 @@ function GoogleAuth() {
           surname: family_name,
           email: email,
           created_at: convertDateToISO(createdIn),
+          // nickname: "",
+          // organization: "",
+          // color: "#accbf3",
+          deleted_user: false,
+          admin: false,
+          delete_organization_permission: false,
         };
         setCurrentUser(newUserObj);
         const { data: newUser, error: insertError } = await supabase
@@ -63,24 +73,15 @@ function GoogleAuth() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      {/* <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          handleSuccess(credentialResponse);
-        }}
-        onError={() => toast.error("Error")}
-        className="google-login-button"
-      /> */}
       <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          handleSuccess(credentialResponse);
-        }}
+        onSuccess={(credentialResponse) => handleSuccess(credentialResponse)}
         onError={() => toast.error("Error")}
-        theme="filled_blue" // Theme of the button: 'outline', 'filled_blue', or 'filled_black'
-        type="standard" // Type of the button: 'standard' or 'icon'
-        size="large" // Size of the button: 'small', 'medium', or 'large'
-        text="signin_with" // Text to display: 'signin_with', 'signup_with', 'continue_with', or 'signin'
-        shape="pill" // Shape of the button: 'rectangular', 'pill', 'circle', or 'square'
-        logo_alignment="center" // Logo alignment: 'left' or 'center'
+        theme="filled_blue"
+        type="standard"
+        size="large"
+        text="signin_with"
+        shape="pill"
+        logo_alignment="center"
       />
     </GoogleOAuthProvider>
   );

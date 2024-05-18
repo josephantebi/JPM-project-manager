@@ -11,12 +11,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { editUser } from "../services/apiUsers";
 import toast from "react-hot-toast";
 import "../style.css";
-import { getProjectsByOrganization } from "../services/apiProjects";
 import { editProject } from "../services/apiProjects";
-import { getNicknames } from "../services/apiUsers";
+import { useDataProvider } from "../Providers/DataProvider";
+import DeleteUser from "../components/DeleteUser";
 
 function MyProfile() {
   const { currentUser, setCurrentUser } = useLogInUser();
+  const { usersDataProvider, projectsData } = useDataProvider();
   const [firstName, setFirstName] = useState(currentUser.first_name || "");
   const [surname, setSurname] = useState(currentUser.surname || "");
   const [nickname, setNickname] = useState(currentUser.nickname || "");
@@ -24,18 +25,8 @@ function MyProfile() {
   const queryClient = useQueryClient();
   const queryClientEdit = useQueryClient();
   const navigate = useNavigate();
-  const organization = currentUser.organization;
 
   //supabase
-  const {
-    isLoading: isLoadingData,
-    data: projectsData,
-    error,
-  } = useQuery({
-    queryKey: ["projects"],
-    queryFn: () => getProjectsByOrganization(organization),
-  });
-
   const {
     isLoading: isLoadingColors,
     data: colorsData,
@@ -43,15 +34,6 @@ function MyProfile() {
   } = useQuery({
     queryKey: ["colors"],
     queryFn: getColors,
-  });
-
-  const {
-    isLoading: isLoadingUsers,
-    data: usersData,
-    error: errorUsers,
-  } = useQuery({
-    queryKey: ["user"],
-    queryFn: getNicknames,
   });
 
   //supabase end
@@ -149,7 +131,7 @@ function MyProfile() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const nicknameExists = usersData.some(
+    const nicknameExists = usersDataProvider.some(
       (org) => org.nickname.toLowerCase() === nickname.toLowerCase()
     );
 
@@ -176,7 +158,7 @@ function MyProfile() {
     mutate({ newUser, id });
   };
 
-  if (isLoadingColors || isLoadingData || isLoadingUsers) {
+  if (isLoadingColors || isLoading || isLoadingProject) {
     return <Spinner />;
   }
 
@@ -234,6 +216,7 @@ function MyProfile() {
         </div>
         <div className="save-button-wrapper">
           <button className="save-button">Save</button>
+          <DeleteUser />
         </div>
       </form>
     </>

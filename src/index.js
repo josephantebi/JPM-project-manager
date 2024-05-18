@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LogInUserProvider } from "./Providers/log-in-user-provider";
-// import { DataProvider } from "./Providers/data-provider";
+import { UserDataProvider } from "./Providers/DataProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +19,9 @@ root.render(
     <LogInUserProvider>
       <QueryClientProvider client={queryClient}>
         {/* <DataProvider> */}
-        <App />
+        <UserDataProvider>
+          <App />
+        </UserDataProvider>
         {/* </DataProvider> */}
       </QueryClientProvider>
     </LogInUserProvider>
