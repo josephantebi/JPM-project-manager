@@ -1,9 +1,4 @@
-import {
-  GoogleLogin,
-  GoogleOAuthProvider,
-  googleLogout,
-} from "@react-oauth/google";
-import { useState, createContext } from "react";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import supabase from "../services/supabase";

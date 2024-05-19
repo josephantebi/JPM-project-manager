@@ -1,5 +1,5 @@
 import "../style.css";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectList from "../components/ProjectList";
 import NewProjectForm from "../components/NewProjectForm";
 import RoleFilter from "../components/RoleFilter";

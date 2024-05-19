@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import "../style.css";
 import { FormControlLabel } from "@mui/material";
 import IOSSwitch from "../components/IOSStyleSwitch";
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editUser } from "../services/apiUsers";
 import Spinner from "./Spinner";
 import toast from "react-hot-toast";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import TextField from "@mui/material/TextField";
-import supabase from "../services/supabase";
 import { editProject } from "../services/apiProjects";
-import { getProjectsByOrganization } from "../services/apiProjects";
 import { deleteUser } from "../services/apiUsers";
 import { useDataProvider } from "../Providers/DataProvider";
 

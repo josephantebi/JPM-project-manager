@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import AllProjectsPage from "../pages/AllProjectsPage";
-import { useQuery } from "@tanstack/react-query";
-import { getUsersIdByEmail } from "../services/apiUsers";
 import supabase from "../services/supabase";
 import Spinner from "../components/Spinner";
-import PageNav from "../components/Header";
 import FirstLogin from "../pages/FirstLoginPage";
 
 function Login() {

@@ -1,5 +1,4 @@
 import "../style.css";
-import PageNav from "../components/Header";
 import GoogleAuth from "../Providers/auth-provider";
 
 function LogInPage() {

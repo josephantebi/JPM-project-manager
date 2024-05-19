@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../style.css";
 import Project from "./Project";
-import { useDataProvider } from "../Providers/DataProvider";
 
 function ProjectList({ projects, users, isLoadingUsers, isLoadingProjects }) {
   const [showTopBtn, setShowTopBtn] = useState(false);

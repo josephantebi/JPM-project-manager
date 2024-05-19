@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import PageNav from "../components/Header";
-import { useLogInUser } from "../Providers/log-in-user-provider";
 import { useDataProvider } from "../Providers/DataProvider";
 import AddNewUser from "../components/AddNewUser";
 import UserList from "../components/UserList";
 import "../style.css";
 
 function AdminPage() {
-  const { currentUser } = useLogInUser();
   const { usersDataProvider } = useDataProvider();
   const [currentView, setCurrentView] = useState(null);
 

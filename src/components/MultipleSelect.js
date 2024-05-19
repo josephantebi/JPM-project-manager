@@ -20,6 +20,13 @@ const MenuProps = {
   },
 };
 
+function formatName(name) {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
 function getStyles(name, personNames, theme) {
   return {
     fontWeight:
@@ -41,9 +48,10 @@ export default function MultipleSelect({
       target: { value },
     } = event;
     const result = typeof value === "string" ? value.split(",") : value;
-    console.log("Selected values:", result); // Log to see what's being selected
     onSelectedNamesChange(result);
   };
+
+  const validSelectedNames = selectedNames.filter((name) => name.trim() !== "");
 
   return (
     <div>
@@ -55,7 +63,7 @@ export default function MultipleSelect({
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
           multiple
-          value={selectedNames}
+          value={validSelectedNames}
           onChange={handleChange}
           input={<OutlinedInput label="Name" />}
           MenuProps={MenuProps}
@@ -93,7 +101,7 @@ export default function MultipleSelect({
                 },
               }}
             >
-              {user.nickname}
+              {formatName(user.nickname)}{" "}
             </MenuItem>
           ))}
         </Select>

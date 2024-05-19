@@ -3,12 +3,11 @@ import { googleLogout } from "@react-oauth/google";
 import "../style.css";
 import logo from "../data/jpm-logo.jpg";
 import { useLogInUser } from "../Providers/log-in-user-provider";
-import toast from "react-hot-toast";
 
 function PageNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, connected, setCurrentUser } = useLogInUser();
+  const { currentUser, connected } = useLogInUser();
   const handleLogout = () => {
     googleLogout();
     window.location.reload();

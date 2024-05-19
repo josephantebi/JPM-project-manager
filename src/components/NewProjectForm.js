@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import "../style.css";
 import { useMutation } from "@tanstack/react-query";
 import { createProject } from "../services/apiProjects";
@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import MultipleSelect from "./MultipleSelect";
+import Spinner from "../components/Spinner";
 
 function NewProjectForm({ setShowForm, usersData }) {
   const [projectName, setProjectName] = useState("");
@@ -18,22 +19,23 @@ function NewProjectForm({ setShowForm, usersData }) {
   const queryClient = useQueryClient();
   const { currentUser } = useLogInUser();
 
-  const handleAddInput = () => {
-    setInputs([
-      ...inputs,
-      { name: "", selectedUsers: [currentUser.nickname].filter(Boolean) },
-    ]);
-  };
-
   // const handleAddInput = () => {
-  //   setInputs([...inputs, { name: "", selectedUsers: [] }]);
+  //   setInputs([
+  //     ...inputs,
+  //     { name: "", selectedUsers: [currentUser.nickname].filter(Boolean) },
+  //   ]);
   // };
+
+  const handleAddInput = () => {
+    setInputs([...inputs, { name: "", selectedUsers: [] }]);
+  };
 
   const handleRemoveInput = (index) => {
     const newInputs = inputs.slice();
     newInputs.splice(index, 1);
     setInputs(newInputs);
   };
+
   const handleSubProjectNameChange = (event, index) => {
     const newInputs = [...inputs];
     newInputs[index].name = event.target.value;
@@ -59,6 +61,18 @@ function NewProjectForm({ setShowForm, usersData }) {
     },
   });
 
+  if (isLoading) return <Spinner />;
+
+  function formatNames(names) {
+    return names.map((name) =>
+      name
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    );
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -76,23 +90,21 @@ function NewProjectForm({ setShowForm, usersData }) {
       const newProjectDetails =
         projectDetails.charAt(0).toUpperCase() + projectDetails.slice(1);
       const createdIn = now.toLocaleDateString();
-
       const allInputs = inputs.map((input, index) => ({
         id: index + 1,
         subProjectName: input.name,
-        // subProjectRoles: input.selectedUsers.map((name) => name.split(" ")[0]),
         subProjectRoles: input.selectedUsers,
         subProjectPercent: "0",
       }));
 
       const allRolesSet = new Set(
         allInputs.flatMap((subProject) =>
-          subProject.subProjectRoles.map((role) => role.toUpperCase())
+          subProject.subProjectRoles.map((role) => role)
         )
       );
 
       if (currentUser.nickname) {
-        allRolesSet.add(currentUser.nickname.toUpperCase());
+        allRolesSet.add(currentUser.nickname);
       }
 
       const allRoles = Array.from(allRolesSet);
@@ -115,7 +127,7 @@ function NewProjectForm({ setShowForm, usersData }) {
           allSubProjects: allInputs,
         },
         roles: {
-          allRoles: allRoles,
+          allRoles: formatNames(allRoles),
         },
         created_at: convertDateToISO(createdIn),
         due_date: dueDate,

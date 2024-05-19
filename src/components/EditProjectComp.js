@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import EditProjectSubProjects from "./EditProjectSubProjects";
 
 function EditProject({
   foundProject,
@@ -44,41 +45,6 @@ function EditProject({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const handleSubProjectNameChange = (index, newName) => {
-    const updatedSubProjects = tempSubProjects.map((subProject, idx) => {
-      if (idx === index) {
-        return { ...subProject, subProjectName: newName };
-      }
-      return subProject;
-    });
-    setTempSubProjects(updatedSubProjects);
-  };
-
-  const handleSubProjectPercentChange = (index, value) => {
-    const newValue = Number(value);
-    const correctedValue = Math.max(0, Math.min(100, newValue));
-    const updatedSubProjects = tempSubProjects.map((subProject, idx) =>
-      idx === index
-        ? { ...subProject, subProjectPercent: correctedValue.toString() }
-        : subProject
-    );
-    setTempSubProjects(updatedSubProjects);
-  };
-
-  const handleSubProjectRolesChange = (index, rolesStr) => {
-    const roles = rolesStr
-      .toUpperCase()
-      .split(",")
-      .map((role) => role.trim());
-    const updatedSubProjects = tempSubProjects.map((subProject, idx) => {
-      if (idx === index) {
-        return { ...subProject, subProjectRoles: roles };
-      }
-      return subProject;
-    });
-    setTempSubProjects(updatedSubProjects);
-  };
 
   const totalPercent = sub_projects.reduce(
     (acc, cur) => acc + Number(cur.subProjectPercent),
@@ -136,81 +102,10 @@ function EditProject({
             style={{ backgroundColor: "#1b2348" }}
           ></textarea>
         </div>
-        <div className="project-form-div">
-          <div className="new-project-text">Sub-projects:</div>
-        </div>
-        <div className="">
-          {tempSubProjects.map((subProject, index) => (
-            <div key={index} className="">
-              <div className="sub-project-name">
-                <div className="project-form-div">
-                  <p>------------------------</p>
-                  <div className="sub-project-percent">
-                    <div className="">
-                      <div
-                        className="new-project-text"
-                        style={{ fontSize: "large" }}
-                      >
-                        Sub-project {subProject.id}:
-                      </div>
-                      <textarea
-                        key={subProject.id}
-                        className="project-details"
-                        type="text"
-                        value={subProject.subProjectName}
-                        onChange={(e) =>
-                          handleSubProjectNameChange(index, e.target.value)
-                        }
-                        style={{ backgroundColor: "#1b2348" }}
-                      ></textarea>
-                    </div>
-
-                    <div className="">
-                      <div
-                        className="new-project-text"
-                        style={{ fontSize: "large" }}
-                      >
-                        Percent:
-                      </div>
-                      <input
-                        key={subProject.id}
-                        className="project-percent"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={subProject.subProjectPercent}
-                        onChange={(e) =>
-                          handleSubProjectPercentChange(index, e.target.value)
-                        }
-                        style={{ backgroundColor: "#1b2348" }}
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div
-                      className="new-project-text"
-                      style={{ fontSize: "large" }}
-                    >
-                      Roles:
-                    </div>{" "}
-                    <input
-                      key={subProject.id}
-                      className="project-name"
-                      type="text"
-                      value={subProject.subProjectRoles.join(", ")}
-                      onChange={(e) =>
-                        handleSubProjectRolesChange(index, e.target.value)
-                      }
-                      style={{ backgroundColor: "#1b2348" }}
-                    ></input>
-                    {/* <MultipleSelectCheckmarks></MultipleSelectCheckmarks> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <p>------------------------</p>
+        <EditProjectSubProjects
+          tempSubProjects={tempSubProjects}
+          setTempSubProjects={setTempSubProjects}
+        />
         <div
           className="form-var due-date-edit"
           style={{ marginTop: "25px", marginBottom: "20px" }}
@@ -283,7 +178,7 @@ function EditProject({
                   className="in-project-role "
                   style={{ backgroundColor: cat.color }}
                 >
-                  {cat.first_name.toUpperCase()}
+                  {cat.nickname.toUpperCase()}
                 </div>
               </li>
             ))}

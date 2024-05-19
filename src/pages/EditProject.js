@@ -1,17 +1,15 @@
 import PageNav from "../components/Header";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-// import { ProjectManagerContext } from "../Providers/Project-Manager-Provider";
 import EditProject from "../components/EditProjectComp";
 import { useQueryClient } from "@tanstack/react-query";
 import { editProject } from "../services/apiProjects";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import Spinner from "../components/Spinner";
 
 function EditProjectpage() {
   const navigate = useNavigate();
-  // const { updateProject } = useContext(ProjectManagerContext);
-  // const { users } = useContext(UserContext);
   const { id: paramsID } = useParams();
   const location = useLocation();
   const queryClient = useQueryClient();
@@ -20,7 +18,6 @@ function EditProjectpage() {
   const foundProject = project;
   const projectsRoles = foundProject.roles.allRoles;
   const sub_projects = foundProject.sub_projects.allSubProjects;
-  // const [projectReturn, setProjectReturn] = useState(foundProject);
   const [projectName, setProjectName] = useState(foundProject.project_name);
   const [projectDetails, setProjectDetails] = useState(
     foundProject.project_details
@@ -29,9 +26,7 @@ function EditProjectpage() {
   const [dueDate, setDueDate] = useState("");
   let projectReturn = foundProject;
   const findRolesByNames = (names) => {
-    return users.filter((role) =>
-      names.includes(role.first_name.toUpperCase())
-    );
+    return users.filter((role) => names.includes(role.nickname));
   };
 
   const matchedRoles = findRolesByNames(projectsRoles);
@@ -47,11 +42,20 @@ function EditProjectpage() {
     )
   );
 
+  function formatNames(names) {
+    return names.map((name) =>
+      name
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    );
+  }
+
   const totalPercent = tempSubProjects.reduce(
     (acc, cur) => acc + Number(cur.subProjectPercent),
     0
   );
-  // const averagePercent = (totalPercent / tempSubProjects.length).toFixed();
   const averagePercent = Math.round(totalPercent / tempSubProjects.length);
 
   const editedProject = {
@@ -61,7 +65,7 @@ function EditProjectpage() {
       allSubProjects: tempSubProjects,
     },
     roles: {
-      allRoles: allRoles,
+      allRoles: formatNames(allRoles),
     },
     created_at: foundProject.created_at,
     due_date: dueDate,
@@ -80,6 +84,7 @@ function EditProjectpage() {
       toast.error("Error editing project");
     },
   });
+  if (isLoading) return <Spinner />;
 
   const handleExitClick = () => {
     navigate(`/projects/${paramsID}`, {

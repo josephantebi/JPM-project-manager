@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import PageNav from "../components/Header";
 import Footer from "../components/Footer";
-import AllProjectsPage from "../pages/AllProjectsPage";
 import LogInPage from "./logInPage";
-import FirstLogin from "./FirstLoginPage";
-import Spinner from "../components/Spinner";
 import Login from "../components/Login";
 import "../style.css";
 
