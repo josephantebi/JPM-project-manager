@@ -141,7 +141,7 @@ function UserCard({ user }) {
       organization: user.organization,
       created_at: user.created_at,
       nickname: user.nickname,
-      admin: user.admin,
+      admin: !user.admin,
     };
     const id = user.id;
     mutateEditUser({ editedUser, id });

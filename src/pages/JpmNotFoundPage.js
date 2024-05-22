@@ -3,7 +3,7 @@ import "../style.css";
 import page404 from "../data/404.jpg";
 import { Link } from "react-router-dom";
 
-function NotFoundPage() {
+function JpmNotFoundPage() {
   return (
     <>
       <div className="nf-container">
@@ -25,4 +25,4 @@ function NotFoundPage() {
   );
 }
 
-export default NotFoundPage;
+export default JpmNotFoundPage;

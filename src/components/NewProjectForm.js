@@ -57,7 +57,7 @@ function NewProjectForm({ setShowForm, usersData }) {
       toast.success("Project successfully created", { duration: 3000 });
     },
     onError: (error) => {
-      toast.error("Error deleting project");
+      toast.error("Error createing project");
     },
   });
 

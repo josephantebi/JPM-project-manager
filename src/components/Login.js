@@ -9,6 +9,7 @@ function Login() {
   const { currentUser, setCurrentUser } = useLogInUser();
   const [isLoading, setIsLoading] = useState(true);
   const [needColor, setNeedColor] = useState(false);
+  const [needOrganization, setNeedOrganization] = useState(false);
 
   const checkAndUpdateUser = async () => {
     try {
@@ -25,6 +26,7 @@ function Login() {
       if (existingUser) {
         setCurrentUser(existingUser);
         setNeedColor(existingUser.color === null);
+        setNeedOrganization(existingUser.organization === null);
         setIsLoading(false);
         return existingUser;
       }
@@ -46,6 +48,7 @@ function Login() {
       return () => clearInterval(intervalId);
     } else {
       setNeedColor(currentUser.color === null);
+      setNeedOrganization(currentUser.organization === null);
       setIsLoading(false);
     }
   }, [currentUser]);
@@ -58,7 +61,9 @@ function Login() {
     );
   }
 
-  return <>{needColor ? <FirstLogin /> : <AllProjectsPage />}</>;
+  return (
+    <>{needColor || needOrganization ? <FirstLogin /> : <AllProjectsPage />}</>
+  );
 }
 
 export default Login;

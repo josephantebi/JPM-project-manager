@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { googleLogout } from "@react-oauth/google";
 import ColorSelect from "../components/SelectColor";
 import getColors from "../services/apiColor";
 import { useQuery } from "@tanstack/react-query";
@@ -12,13 +14,19 @@ import { useLogInUser } from "../Providers/log-in-user-provider";
 import supabase from "../services/supabase";
 import { getNicknames } from "../services/apiUsers";
 import AllProjectsPage from "../pages/AllProjectsPage";
+import initialUsersData from "../data/InitialUsersData";
+import initialProjectsData from "../data/InitialProjectsData";
+import { createProject } from "../services/apiProjects";
+import { createUser } from "../services/apiUsers";
 
 function FirstLogin() {
+  const navigate = useNavigate();
   const [organizationName, setOrganizationName] = useState("");
   const [nickname, setNickname] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
   const [isLoadingUser, setIsLoadingUser] = useState(false);
+  const [showDelayedSpinner, setShowDelayedSpinner] = useState(false);
   const { currentUser, setCurrentUser } = useLogInUser();
+  const [selectedColor, setSelectedColor] = useState(currentUser.color || "");
   const queryClient = useQueryClient();
 
   const {
@@ -55,6 +63,29 @@ function FirstLogin() {
     },
     onError: (error) => {
       toast.error("Error editing user");
+    },
+  });
+
+  const { mutate: mutateAddProject, isLoading: isLoadingAddProject } =
+    useMutation({
+      mutationFn: createProject,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["create project"] });
+        console.success("Project successfully created");
+      },
+      onError: (error) => {
+        console.error("Error createing project");
+      },
+    });
+
+  const { mutate: mutateAddUser, isLoading: isLoadingAddUser } = useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["create user"] });
+      console.success("Project successfully created");
+    },
+    onError: (error) => {
+      console.error("Error createing project");
     },
   });
 
@@ -124,14 +155,36 @@ function FirstLogin() {
     return () => clearInterval(intervalId);
   }, []);
 
-  if (
-    isLoadingColors ||
-    isLoadingOrganizations ||
-    isLoading ||
-    isLoadingUser ||
-    isLoadingUsers
-  ) {
-    return <Spinner />;
+  function buildingADemoVersion() {
+    initialUsersData.forEach((user) => {
+      const newUser = {
+        first_name: user.first_name,
+        surname: user.surname,
+        nickname: user.nickname,
+        email: user.email,
+        organization: organizationName,
+        admin: false,
+        color: user.color,
+        created_at: user.created_at,
+        deleted_user: false,
+        delete_organization_permission: false,
+      };
+      mutateAddUser(newUser);
+    });
+    initialProjectsData.forEach((project) => {
+      const newProject = {
+        project_name: project.project_name,
+        project_details: project.project_details,
+        sub_projects: project.sub_projects,
+        roles: project.roles,
+        created_at: project.created_at,
+        due_date: project.due_date,
+        percent: project.percent,
+        organization: organizationName,
+        posted_by: project.posted_by,
+      };
+      mutateAddProject(newProject);
+    });
   }
 
   const handleSubmit = (event) => {
@@ -155,15 +208,15 @@ function FirstLogin() {
       return;
     }
 
-    const nicknameExists = usersData.some(
-      (org) =>
-        org.nickname && org.nickname.toLowerCase() === nickname.toLowerCase()
-    );
+    // const nicknameExists = usersData.some(
+    //   (org) =>
+    //     org.nickname && org.nickname.toLowerCase() === nickname.toLowerCase()
+    // );
 
-    if (nicknameExists) {
-      toast.error("Nickname is already taken. Please choose another nickname.");
-      return;
-    }
+    // if (nicknameExists) {
+    //   toast.error("Nickname is already taken. Please choose another nickname.");
+    //   return;
+    // }
 
     const newUser = {
       first_name: currentUser.first_name,
@@ -175,12 +228,36 @@ function FirstLogin() {
       nickname: nickname,
       admin: true,
       deleted_user: false,
+      delete_organization_permission: true,
     };
     const id = currentUser.id;
     mutate({ newUser, id });
     toast.success("User successfully created");
+    if (currentUser.color === null && currentUser.organization === null) {
+      buildingADemoVersion();
+      // setCurrentUser({});
+      setShowDelayedSpinner(true);
+      setTimeout(() => {
+        toast.success("Demo Version created successfully.", { duration: 3000 });
+        setShowDelayedSpinner(false);
+        navigate("/");
+      }, 8000);
+    }
     setIsLoadingUser(true);
   };
+
+  if (
+    isLoadingColors ||
+    isLoadingOrganizations ||
+    isLoading ||
+    isLoadingUser ||
+    isLoadingUsers ||
+    isLoadingAddUser ||
+    isLoadingAddProject ||
+    showDelayedSpinner
+  ) {
+    return <Spinner />;
+  }
 
   if (
     currentUser &&

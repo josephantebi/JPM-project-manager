@@ -52,9 +52,10 @@ function DeleteUser() {
       mutationFn: ({ editedProject, id }) => editProject(editedProject, id),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["projects"] });
+        console.success("Project edited successfully", { duration: 3000 });
       },
       onError: (error) => {
-        toast.error("Error editing projects");
+        console.error("Error editing projects");
       },
     });
 
@@ -63,10 +64,10 @@ function DeleteUser() {
       mutationFn: (projectId) => deleteProject(projectId),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["projects"] });
-        toast.success("Project deleted successfully", { duration: 3000 });
+        console.success("Project deleted successfully", { duration: 3000 });
       },
       onError: (error) => {
-        toast.error("Error deleting project");
+        console.error("Error deleting project");
       },
     });
 
@@ -93,6 +94,29 @@ function DeleteUser() {
 
     return date.toISOString();
   }
+
+  const deleteAllProjectsOrganization = (objects) => {
+    objects.forEach((obj) => {
+      const projectId = obj.id;
+      mutateDeleteProject(projectId);
+    });
+  };
+
+  const processUsers = () => {
+    usersDataProvider.forEach((user) => {
+      const id = user.id;
+      if (user.deleted_user) {
+        mutateDeleteUser(id);
+      } else {
+        const newUser = {
+          organization: null,
+          admin: false,
+          delete_organization_permission: false,
+        };
+        mutateEditUser({ newUser, id });
+      }
+    });
+  };
 
   function updateRolesByName(oldName, newName, objectsList) {
     const lowerOldName = oldName.toLowerCase();
@@ -142,26 +166,10 @@ function DeleteUser() {
   const handleDelete = () => {
     const id = currentUser.id;
     if (singleAdmin && currentUserAdmin) {
-      console.log(
-        111,
-        "currentUserAdmin",
-        currentUserAdmin,
-        "singleAdmin",
-        singleAdmin
-      );
-      // Organization and user deletion
-      // Deleting all projects
-      // Deleting all projects function from projectsData
-
-      // Editing the organization of the users to null
-      // Editing the organization of the users to null function from usersData
-
-      // Deleting user
-      // deleteUser(id);
-      console.log("Deleting");
+      deleteAllProjectsOrganization(projectsData);
+      processUsers();
+      mutateDeleteUser(id);
     } else {
-      // Edit user
-      console.log("Edit");
       const deletedUserNickname = "Former user: " + currentUser.nickname;
       const now = new Date();
       const createdIn = now.toLocaleDateString();

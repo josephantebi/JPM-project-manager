@@ -10,7 +10,7 @@ import AboutMe from "./pages/AboutMe";
 import JPMvision from "./pages/JPMvision";
 import MyProfile from "./pages/MyProfile";
 import { useLogInUser } from "./Providers/log-in-user-provider";
-import NotFoundPage from "./pages/NotFoundPage";
+import JpmNotFoundPage from "./pages/JpmNotFoundPage";
 
 function Router() {
   const { connected } = useLogInUser();
@@ -33,16 +33,16 @@ function Router() {
         <Route
           path="projects/:id"
           element={
-            connected ? <Fullprojectpage /> : <Navigate to="/login" replace />
+            connected ? <Fullprojectpage /> : <Navigate to="/" replace />
           }
         />
         <Route
           path="projects/:id/edit"
           element={
-            connected ? <EditProjectpage /> : <Navigate to="/login" replace />
+            connected ? <EditProjectpage /> : <Navigate to="/" replace />
           }
         />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="*" element={<JpmNotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

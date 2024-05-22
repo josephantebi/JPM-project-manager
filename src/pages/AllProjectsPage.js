@@ -82,9 +82,9 @@ function AllProjectsPage() {
       {showForm && (
         <NewProjectForm setShowForm={setShowForm} usersData={usersData} />
       )}
-      <div className="sort-list-div">
+      {/* <div className="sort-list-div">
         <input placeholder="Search" className="filter-by-name" />
-      </div>
+      </div> */}
       <main className="main">
         <RoleFilter
           currentRole={currentRole}
