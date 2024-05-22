@@ -79,14 +79,19 @@ function AddNewUser() {
   };
 
   return (
-    <div>
+    <div className="add-new-user-container">
       <input
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter user email"
+        placeholder="Enter new user email"
         type="email"
+        className="add-new-user-input"
       />
-      <button onClick={checkAndUpdateUser} disabled={isLoading}>
+      <button
+        className="edit-user-btn"
+        onClick={checkAndUpdateUser}
+        disabled={isLoading}
+      >
         Add User
       </button>
       {isLoading && <Spinner />}

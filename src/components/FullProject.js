@@ -186,13 +186,13 @@ function FullProject({ project, users }) {
         </div>
         <div className="in-project-role-div merriweather-font">
           <ul>
-            {matchedRoles.map((cat) => (
-              <li key={cat.id}>
+            {augmentedRoles.map((cat, index) => (
+              <li key={`role-${index}`}>
                 <div
                   className="in-project-role"
                   style={{ backgroundColor: cat.color || "#ccc" }}
                 >
-                  {cat.nickname.toUpperCase()}
+                  {cat.name.toUpperCase()}
                 </div>
               </li>
             ))}

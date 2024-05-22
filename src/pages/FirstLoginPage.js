@@ -63,19 +63,20 @@ function FirstLogin() {
   };
 
   const handleChangeNickname = (event) => {
-    let nicknameTemp = event.target.value;
-    nicknameTemp =
-      nicknameTemp.charAt(0).toUpperCase() +
-      nicknameTemp.slice(1).toLowerCase();
-    setNickname(nicknameTemp);
+    const nicknameTemp = event.target.value;
+    const formattedNickname = nicknameTemp.replace(/\b(\w)/g, (char) =>
+      char.toUpperCase()
+    );
+    setNickname(formattedNickname);
   };
 
   const handleChangeOrganizationName = (event) => {
-    let organizationNameTemp = event.target.value;
-    organizationNameTemp =
-      organizationNameTemp.charAt(0).toUpperCase() +
-      organizationNameTemp.slice(1).toLowerCase();
-    setOrganizationName(organizationNameTemp);
+    const organizationNameTemp = event.target.value;
+    const formattedOrganization = organizationNameTemp.replace(
+      /\b(\w)/g,
+      (char) => char.toUpperCase()
+    );
+    setOrganizationName(formattedOrganization);
   };
 
   const checkAndUpdateUser = async () => {

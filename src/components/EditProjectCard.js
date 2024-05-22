@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import EditProjectSubProjects from "./EditProjectSubProjects";
 
-function EditProject({
+function EditProjectCard({
   foundProject,
   matchedRoles,
   projectName,
@@ -14,6 +14,7 @@ function EditProject({
   setDueDate,
 }) {
   const sub_projects = foundProject.sub_projects.allSubProjects;
+
   const handleNameChange = (event) => {
     setProjectName(event.target.value);
   };
@@ -25,6 +26,10 @@ function EditProject({
   const adjustTextareaHeight = (textarea) => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
+  };
+
+  const formatDateToISO = (dateString) => {
+    return dateString ? dateString.split("T")[0] : "";
   };
 
   useEffect(() => {
@@ -116,7 +121,7 @@ function EditProject({
           <input
             type="date"
             className=""
-            value={dueDate}
+            value={formatDateToISO(foundProject.due_date)}
             onChange={(e) => setDueDate(e.target.value)}
           />
         </div>
@@ -128,11 +133,7 @@ function EditProject({
             }}
           >
             <span>Creation date:</span>
-            <span>
-              {foundProject.created_at
-                ? formatDate(foundProject.created_at)
-                : "N/A"}
-            </span>
+            <span>{formatDate(foundProject.created_at)}</span>
           </span>
           <span
             style={{
@@ -141,11 +142,7 @@ function EditProject({
             }}
           >
             <span>Due Date:</span>
-            <span>
-              {foundProject.due_date
-                ? formatDate(foundProject.due_date)
-                : "N/A"}
-            </span>
+            <span>{formatDate(foundProject.due_date)}</span>
           </span>
           <span>Percent: {averagePercent.toFixed() + "%"}</span>
         </div>
@@ -188,4 +185,4 @@ function EditProject({
     </div>
   );
 }
-export default EditProject;
+export default EditProjectCard;

@@ -162,8 +162,7 @@ function DeleteUser() {
     } else {
       // Edit user
       console.log("Edit");
-      const deletedUserNickname =
-        "Former user: " + currentUser.nickname.toUpperCase();
+      const deletedUserNickname = "Former user: " + currentUser.nickname;
       const now = new Date();
       const createdIn = now.toLocaleDateString();
       const newUser = {
@@ -196,55 +195,65 @@ function DeleteUser() {
     return <Spinner />;
 
   return (
-    <Stack sx={{ width: "100%" }} spacing={2}>
-      <Alert
-        variant="outlined"
-        severity="error"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          {singleAdmin && currentUserAdmin ? (
-            <>
-              <div className="alert-text">
-                You are the only admin in the organization. Do you wish to
-                delete the organization or assign another user as admin before
-                deletion? <br />
-                <strong>
-                  We recommend assigning another user as admin before deleting
-                  your profile.
-                </strong>
-              </div>
-            </>
-          ) : (
-            <strong className="alert-text">
-              Deleting a user is irreversible! Are you sure you want to proceed?
+    <>
+      <div className="delete-user-div">
+        <p>
+          Please confirm that you want to delete this user. Deleting a user is a
+          permanent action and cannot be undone. All associated data and records
+          for this user will be irretrievably removed from the system.
+        </p>
+        {singleAdmin && currentUserAdmin && (
+          <div className="delete-user-warning">
+            <strong>
+              You are the only admin in the organization. Do you wish to delete
+              the organization or assign another user as admin before deletion?{" "}
+              <br />
+              We recommend assigning another user as admin before deleting your
+              profile.
             </strong>
-          )}
-        </div>
-        {showConfirm ? (
-          <div>
-            <Button
-              color="warning"
-              onClick={handleDelete}
-              disabled={isLoadingEditUser || isLoadingDeleteUser}
-            >
-              {singleAdmin ? "Confirm Delete Organization" : "Confirm Delete"}
-            </Button>
-            <Button color="inherit" onClick={() => setShowConfirm(false)}>
-              Cancel
-            </Button>
           </div>
-        ) : (
-          <Button color="error" onClick={() => setShowConfirm(true)}>
-            {singleAdmin ? "Delete Organization" : "Delete User"}
-          </Button>
         )}
-      </Alert>
-    </Stack>
+      </div>
+      <div className="delete-user-mui">
+        <Stack sx={{ width: "39%" }} spacing={2}>
+          <Alert
+            variant="outlined"
+            severity="error"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <strong className="alert-text">
+                Are you sure you want to proceed with deletion?
+              </strong>
+            </div>
+            {showConfirm ? (
+              <div>
+                <Button
+                  color="warning"
+                  onClick={handleDelete}
+                  disabled={isLoadingEditUser || isLoadingDeleteUser}
+                >
+                  {singleAdmin
+                    ? "Confirm Delete Organization"
+                    : "Confirm Delete"}
+                </Button>
+                <Button color="inherit" onClick={() => setShowConfirm(false)}>
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button color="error" onClick={() => setShowConfirm(true)}>
+                {singleAdmin ? "Delete Organization" : "Delete User"}
+              </Button>
+            )}
+          </Alert>
+        </Stack>
+      </div>
+    </>
   );
 }
 

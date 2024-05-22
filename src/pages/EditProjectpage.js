@@ -1,7 +1,7 @@
 import PageNav from "../components/Header";
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import EditProject from "../components/EditProjectComp";
+import EditProjectCard from "../components/EditProjectCard";
 import { useQueryClient } from "@tanstack/react-query";
 import { editProject } from "../services/apiProjects";
 import { useMutation } from "@tanstack/react-query";
@@ -132,7 +132,7 @@ function EditProjectpage() {
         </span>
       </span>
       <form className="">
-        <EditProject
+        <EditProjectCard
           foundProject={foundProject}
           matchedRoles={matchedRoles}
           projectName={projectName}

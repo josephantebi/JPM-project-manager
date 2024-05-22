@@ -4,7 +4,7 @@ import UserCard from "./UserCard";
 
 function User({ user }) {
   return (
-    <li className="user">
+    <li className="user-li">
       <UserCard user={user} key={user.id} />
     </li>
   );

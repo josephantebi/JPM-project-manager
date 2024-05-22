@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Fullprojectpage from "./pages/Fullprojectpage";
 import AdminPage from "./pages/AdminPage";
-import EditProjectpage from "./pages/EditProject";
+import EditProjectpage from "./pages/EditProjectpage";
 import AboutJPM from "./pages/AboutJPM";
 import AboutMe from "./pages/AboutMe";
 import JPMvision from "./pages/JPMvision";

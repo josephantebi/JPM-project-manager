@@ -775,14 +775,19 @@ ul {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 8%;
 }
 
 .user-form-div {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px; /* Adjust based on your spacing preference */
+  margin-bottom: 20px;
+}
+
+.user-form-edit {
+  margin-top: 7%;
+  margin-left: -20%;
 }
 
 .form-label {
@@ -800,7 +805,7 @@ ul {
 }
 
 .organization-input {
-  width: 300px; /* Adjust based on your preference */
+  width: 300px;
   font-size: medium;
   padding-left: 5px;
 }
@@ -808,7 +813,7 @@ ul {
 .color-select-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px; /* Adjust based on your spacing preference */
+  margin-bottom: 20px;
 }
 
 .save-button-wrapper {
@@ -881,7 +886,7 @@ ul {
   margin-bottom: 20px;
 }
 
-.my-profile {
+.my-profile-btn {
   background-color: #16b04e;
   color: rgb(255, 255, 255);
   border: none;
@@ -896,20 +901,18 @@ ul {
   margin-left: 10px;
 }
 
-.my-profile:hover {
+.my-profile-btn:hover {
   transform: scale(1.05);
   color: black;
 }
 
-.user {
+.user-li {
   font-size: 20px;
   line-height: 1.4;
   color: white;
   padding: 8px 10px;
   letter-spacing: 1.5px;
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  width: 80%;
 }
 
 .alert-text {
@@ -927,6 +930,112 @@ ul {
 .expand-user-card {
   display: flex;
   justify-content: center;
+}
+
+.my-profile {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 20px;
+  color: white;
+}
+.my-profile-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  gap: 20px;
+  margin-top: 50px;
+  margin-left: 5px;
+}
+
+.my-profile-buttons button {
+  background-color: transparent;
+  font-size: large;
+  border: none;
+  color: white;
+  padding: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.my-profile-buttons button:hover {
+  background-color: #ffffff;
+  color: #232b5a;
+}
+
+.my-profile-view {
+  font-size: larger;
+}
+
+.user-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  gap: 30px;
+  width: auto;
+  margin-top: 5%;
+  margin-left: 25%;
+}
+
+.avatar-container {
+  margin-left: 8%;
+}
+
+.delete-user-div {
+  padding: 5px 20px 10px;
+  margin-bottom: 1%;
+}
+
+.delete-user-warning {
+  color: red;
+  padding: 10px 30px 10px;
+  line-height: 2;
+}
+
+.delete-user-mui {
+  margin-left: 7%;
+}
+
+.edit-user-btn {
+  background-color: #a0deff;
+  border: none;
+  padding: 3px 5px;
+  font-size: large;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.edit-user-btn:hover {
+  transform: scale(1.05);
+}
+
+.save-user-btn {
+  margin-left: 25%;
+  margin-right: 8px;
+  padding: 3px 3px;
+}
+
+.admin-status {
+  margin-left: 30px;
+  margin-right: 20px;
+}
+
+.add-new-user-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 8%;
+  margin-left: 20%;
+}
+
+.add-new-user-input {
+  font-size: large;
+  width: 30%;
+  padding-left: 4px;
+  border-radius: 5px;
 }
 
 @keyframes spin {

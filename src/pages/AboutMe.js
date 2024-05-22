@@ -28,7 +28,7 @@ function AboutMe() {
           enhanced by the leadership and strategic planning skills I honed
           during my military service.
         </p>
-        <p
+        <div
           className="about"
           style={{
             display: "flex",
@@ -88,7 +88,7 @@ function AboutMe() {
               ></img>
             </a>
           </span>
-        </p>
+        </div>
       </div>
     </>
   );

@@ -3,10 +3,24 @@ import toast from "react-hot-toast";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import supabase from "../services/supabase";
 import id from "../private/google-auth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editUser } from "../services/apiUsers";
 
 function GoogleAuth() {
   const clientId = id;
   const { setCurrentUser } = useLogInUser();
+  const queryClient = useQueryClient();
+
+  const { mutate: mutateEditUser, isLoading: isLoadingEditUser } = useMutation({
+    mutationFn: ({ editedUser, id }) => editUser(editedUser, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      console.success("User permissions successfully changed");
+    },
+    onError: (error) => {
+      console.error("Error editing user");
+    },
+  });
 
   function convertDateToISO(dateString) {
     const parts = dateString.split(".");
@@ -23,16 +37,26 @@ function GoogleAuth() {
   const handleSuccess = async (credentialResponse) => {
     try {
       // Decode the JWT token to extract user data
-      const { given_name, family_name, email } = JSON.parse(
+      const { given_name, family_name, email, picture } = JSON.parse(
         atob(credentialResponse.credential.split(".")[1])
       );
-
       // Check if user already exists in the roles table
       const { data: existingUser, error: fetchError } = await supabase
         .from("users")
         .select("*")
         .eq("email", email)
         .single();
+
+      if (existingUser) {
+        if (existingUser.avatar !== picture) {
+          existingUser.avatar = picture;
+          const editedUser = {
+            avatar: picture,
+          };
+          const id = existingUser.id;
+          mutateEditUser({ editedUser, id });
+        }
+      }
 
       if (existingUser === null) {
         // Insert new user into roles table
@@ -43,12 +67,10 @@ function GoogleAuth() {
           surname: family_name,
           email: email,
           created_at: convertDateToISO(createdIn),
-          // nickname: "",
-          // organization: "",
-          // color: "#accbf3",
           deleted_user: false,
           admin: false,
           delete_organization_permission: false,
+          avatar: picture,
         };
         setCurrentUser(newUserObj);
         const { data: newUser, error: insertError } = await supabase

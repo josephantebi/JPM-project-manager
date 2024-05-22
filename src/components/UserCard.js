@@ -18,18 +18,10 @@ function UserCard({ user }) {
   const [adminStatus, setAdminStatus] = useState(user.admin);
   const [assignMode, setAssignMode] = useState(false);
   const [newAssignment, setNewAssignment] = useState("");
+  const [emailError, setEmailError] = useState("");
   const { currentUser } = useLogInUser();
   const { usersDataProvider, projectsData } = useDataProvider();
   const queryClient = useQueryClient();
-
-  // const {
-  //   isLoading: isLoadingData,
-  //   data: projectsData,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["projects"],
-  //   queryFn: () => getProjectsByOrganization(organization),
-  // });
 
   const { mutate: mutateEditUser, isLoading: isLoadingEditUser } = useMutation({
     mutationFn: ({ editedUser, id }) => editUser(editedUser, id),
@@ -62,6 +54,22 @@ function UserCard({ user }) {
         toast.error("Error deleting user");
       },
     });
+
+  const validateEmail = (email) => {
+    const re =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleEmailChange = (event) => {
+    const email = event.target.value;
+    if (!validateEmail(email)) {
+      setEmailError("Invalid email address");
+    } else {
+      setEmailError("");
+    }
+    setNewAssignment(email);
+  };
 
   const toggleTextVisibility = () => {
     if (!editMode) {
@@ -120,6 +128,7 @@ function UserCard({ user }) {
 
   const discardAssignmentChanges = () => {
     setNewAssignment("");
+    setEmailError("");
     setAssignMode(false);
   };
 
@@ -195,30 +204,65 @@ function UserCard({ user }) {
                 label="Enter Email"
                 variant="outlined"
                 value={newAssignment}
-                onChange={(e) => setNewAssignment(e.target.value.trim())}
+                onChange={handleEmailChange}
+                error={!!emailError}
+                helperText={emailError}
                 size="small"
                 style={{ margin: "0 8px" }}
+                sx={{
+                  input: {
+                    color: "white", // Ensures the text inside the input is white
+                  },
+                  ".MuiInputLabel-root": {
+                    // Styles for label
+                    color: "white", // Ensures the label text is white
+                    "&.Mui-focused": {
+                      color: "white", // Ensures the label text remains white when focused
+                    },
+                  },
+                  ".MuiOutlinedInput-root": {
+                    // Styles for the outline
+                    "& fieldset": {
+                      borderColor: "white", // Default state border
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "white", // Hover state border
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "white", // Focused state border
+                    },
+                    "&.Mui-error .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "red", // Red border if there is an error
+                    },
+                  },
+                }}
               />
-              <button
-                onClick={saveAssignment}
-                variant="contained"
-                color="success"
-              >
-                Save
-              </button>
-              <button
-                onClick={discardAssignmentChanges}
-                variant="outlined"
-                color="error"
-              >
-                Cancel
-              </button>
+              <div>
+                <button
+                  onClick={saveAssignment}
+                  variant="contained"
+                  color="success"
+                  className="edit-user-btn"
+                  style={{ marginRight: "8px", marginTop: "8px" }}
+                >
+                  Save
+                </button>
+                <button
+                  onClick={discardAssignmentChanges}
+                  variant="outlined"
+                  color="error"
+                  className="edit-user-btn "
+                >
+                  Cancel
+                </button>
+              </div>
             </>
           ) : (
             <button
               onClick={() => setAssignMode(true)}
               variant="contained"
               color="primary"
+              className="edit-user-btn"
             >
               Assign User
             </button>
@@ -265,10 +309,13 @@ function UserCard({ user }) {
             )
           )}
           {!editMode && user.nickname !== currentUser.nickname && (
-            <button onClick={() => setEditMode(true)}>Edit user</button>
+            <button className="edit-user-btn" onClick={() => setEditMode(true)}>
+              Edit user
+            </button>
           )}
           {editMode && (
             <div>
+              <span className="admin-status">Admin Status</span>
               <FormControlLabel
                 control={
                   <IOSSwitch
@@ -276,10 +323,19 @@ function UserCard({ user }) {
                     onChange={handleToggleAdmin}
                   />
                 }
-                label="Admin Status"
+                label=""
               />
-              <button onClick={saveChanges}>Save</button>
-              <button onClick={discardChanges}>Cancel</button>
+              <div>
+                <button
+                  className="edit-user-btn save-user-btn"
+                  onClick={saveChanges}
+                >
+                  Save
+                </button>
+                <button className="edit-user-btn" onClick={discardChanges}>
+                  Cancel
+                </button>
+              </div>
             </div>
           )}
         </span>

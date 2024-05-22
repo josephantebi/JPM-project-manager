@@ -75,7 +75,7 @@ function PageNav() {
             {connected && (
               <Link
                 to="/myProfile"
-                className={`my-profile ${
+                className={`my-profile-btn ${
                   location.pathname === "/myProfile" ? "activeLink" : ""
                 }`}
               >
@@ -85,7 +85,7 @@ function PageNav() {
             {connected && (
               <button
                 onClick={handleLogout}
-                className="my-profile"
+                className="my-profile-btn"
                 style={{ backgroundColor: "black" }}
                 onMouseOver={(e) => (e.target.style.color = "red")}
                 onMouseOut={(e) => (e.target.style.color = "")}
@@ -96,7 +96,7 @@ function PageNav() {
           </span>
         </header>
       </nav>
-      {connected && (
+      {connected && currentUser.nickname && (
         <span className="welcome">Welcome: {currentUser.nickname}</span>
       )}
     </>
