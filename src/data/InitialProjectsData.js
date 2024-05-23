@@ -100,7 +100,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Monica", "Rachel", "Chandler", "Joey"],
     },
-    percent: 0,
+    percent: 67,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Ross",
@@ -139,7 +139,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross"],
     },
-    percent: 0,
+    percent: 67,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Ross",
@@ -309,7 +309,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
-    percent: 0,
+    percent: 34,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Phoebe",
@@ -348,7 +348,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
-    percent: 0,
+    percent: 5,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Chandler",
@@ -387,7 +387,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Phoebe", "Rachel"],
     },
-    percent: 0,
+    percent: 47,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Phoebe",
@@ -419,7 +419,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Phoebe", "Monica"],
     },
-    percent: 0,
+    percent: 2,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Monica",
@@ -465,7 +465,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
-    percent: 0,
+    percent: 33,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
     posted_by: "Rachel",

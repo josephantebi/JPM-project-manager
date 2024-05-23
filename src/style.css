@@ -168,11 +168,11 @@ p {
 
 .btn-all-role {
   font-family: "Merriweather", sans-serif;
-  background-color: red;
-  margin-top: 5px;
-  margin-bottom: 13px;
+  background-color: #fdde55;
+  margin-top: 8px;
   width: 100%;
   color: white;
+  font-weight: bold;
 }
 
 .btn-all-role:hover {

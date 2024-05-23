@@ -18,6 +18,7 @@ import initialUsersData from "../data/InitialUsersData";
 import initialProjectsData from "../data/InitialProjectsData";
 import { createProject } from "../services/apiProjects";
 import { createUser } from "../services/apiUsers";
+import { duration } from "@mui/material";
 
 function FirstLogin() {
   const navigate = useNavigate();
@@ -235,13 +236,15 @@ function FirstLogin() {
     toast.success("User successfully created");
     if (currentUser.color === null && currentUser.organization === null) {
       buildingADemoVersion();
-      // setCurrentUser({});
       setShowDelayedSpinner(true);
+      setCurrentUser({});
+      toast.success("Demo Version created successfully.", {
+        duration: 3000,
+      });
       setTimeout(() => {
-        toast.success("Demo Version created successfully.", { duration: 3000 });
         setShowDelayedSpinner(false);
-        navigate("/");
-      }, 8000);
+        // window.location.reload();
+      }, 6000);
     }
     setIsLoadingUser(true);
   };
