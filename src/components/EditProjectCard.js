@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import EditProjectSubProjects from "./EditProjectSubProjects";
+import PrioritySelect from "./SelectPriority";
 
 function EditProjectCard({
   foundProject,
@@ -12,6 +13,8 @@ function EditProjectCard({
   setTempSubProjects,
   dueDate,
   setDueDate,
+  priority,
+  setPriority,
 }) {
   const sub_projects = foundProject.sub_projects.allSubProjects;
 
@@ -21,6 +24,10 @@ function EditProjectCard({
 
   const handleDetailsChange = (event) => {
     setProjectDetails(event.target.value);
+  };
+
+  const handleChangePriority = (value) => {
+    setPriority(value);
   };
 
   const adjustTextareaHeight = (textarea) => {
@@ -110,6 +117,10 @@ function EditProjectCard({
         <EditProjectSubProjects
           tempSubProjects={tempSubProjects}
           setTempSubProjects={setTempSubProjects}
+        />
+        <PrioritySelect
+          priority={priority}
+          setPriority={handleChangePriority}
         />
         <div
           className="form-var due-date-edit"

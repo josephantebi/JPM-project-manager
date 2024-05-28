@@ -22,6 +22,7 @@ function EditProjectpage() {
   const [projectDetails, setProjectDetails] = useState(
     foundProject.project_details
   );
+  const [priority, setPriority] = useState(foundProject.priority);
   const [tempSubProjects, setTempSubProjects] = useState([...sub_projects]);
   const [dueDate, setDueDate] = useState("");
   let projectReturn = foundProject;
@@ -72,6 +73,7 @@ function EditProjectpage() {
     percent: averagePercent,
     posted_by: foundProject.posted_by,
     organization: foundProject.organization,
+    priority: priority,
   };
 
   const { mutate, isLoading } = useMutation({
@@ -143,6 +145,8 @@ function EditProjectpage() {
           setTempSubProjects={setTempSubProjects}
           dueDate={dueDate}
           setDueDate={setDueDate}
+          priority={priority}
+          setPriority={setPriority}
         />
       </form>
     </>

@@ -242,7 +242,7 @@ function UserCard({ user }) {
                   onClick={saveAssignment}
                   variant="contained"
                   color="success"
-                  className="edit-user-btn"
+                  className="edit-user-btn save-user-btn"
                   style={{ marginRight: "8px", marginTop: "8px" }}
                 >
                   Save

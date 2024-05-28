@@ -1,8 +1,7 @@
-import React from "react";
-import { PieChart, Tooltip } from "recharts";
+import React, { useState, useEffect } from "react";
 import "../style.css";
-import { Pie } from "recharts/lib/polar/Pie";
-import { Cell } from "recharts/lib/component/Cell";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import priorityData from "../data/PriorityData";
 
 function FullProject({ project, users }) {
   const {
@@ -13,8 +12,22 @@ function FullProject({ project, users }) {
     percent,
     posted_by,
   } = project;
+  const [chartWidth, setChartWidth] = useState(
+    window.innerWidth < 730 ? window.innerWidth - 20 : 730
+  );
   const roles = project.roles.allRoles;
   const sub_projects = project.sub_projects.allSubProjects;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setChartWidth(window.innerWidth < 730 ? window.innerWidth - 20 : 730);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // date
   function formatDate(isoDateString) {
@@ -34,6 +47,11 @@ function FullProject({ project, users }) {
   }
   const matchedRoles = findRolesByNames(roles);
 
+  function getColorByPriority(priorityName) {
+    const priority = priorityData.find((p) => p.priority === priorityName);
+    return priority ? priority.color : "rgb(255, 255, 255)";
+  }
+
   const roleCount = sub_projects
     .flatMap((subProject) => subProject.subProjectRoles)
     .reduce((acc, roleName) => {
@@ -42,26 +60,23 @@ function FullProject({ project, users }) {
     }, {});
 
   function addColorToRoles(roles, users) {
-    // Convert the roles object into an array of objects for processing
     const rolesArray = Object.entries(roles).map(([role, counter]) => ({
       name: role,
       counter,
     }));
 
-    // Map through the array and add the color by finding the corresponding user
     const enhancedRolesArray = rolesArray.map((roleObj) => {
       const user = users.find(
         (user) => user.nickname.toUpperCase() === roleObj.name.toUpperCase()
       );
       return {
         ...roleObj,
-        color: user ? user.color : "#ccc", // Default color if no match is found
+        color: user ? user.color : "#ccc",
       };
     });
 
-    return enhancedRolesArray; // Return the array format directly
+    return enhancedRolesArray;
   }
-
   const augmentedRoles = addColorToRoles(roleCount, users);
 
   const roleCountArray = Object.entries(roleCount).map(([role, counter]) => {
@@ -85,11 +100,23 @@ function FullProject({ project, users }) {
 
   return (
     <div className="project full-project">
-      <span>
+      <span className="span-full-project">
         <div className="merriweather-font created-by">
           Project created by: {postByNickname}
         </div>
-        <div className="merriweather-font">Project's name:</div>
+        <span className="merriweather-font">Priority:</span>
+        <span
+          style={{
+            color: getColorByPriority(project.priority),
+            fontWeight: "bolder",
+            marginLeft: "5px",
+          }}
+        >
+          {project.priority}
+        </span>
+        <div className="merriweather-font" style={{ marginTop: "10px" }}>
+          Project's name:
+        </div>
         <div className="project-name">{project_name}</div>
         <div className="merriweather-font">Project details:</div>
         <div className="project-details">{project_details}</div>
@@ -200,7 +227,7 @@ function FullProject({ project, users }) {
         </div>
         <>
           {
-            <PieChart width={730} height={250}>
+            <PieChart width={190} height={250} className="responsive-pie">
               <Pie
                 data={roleCountArray}
                 nameKey="role"

@@ -85,7 +85,6 @@ function EditProjectSubProjects({ tempSubProjects, setTempSubProjects }) {
           <div key={index} className="">
             <div className="sub-project-name">
               <div className="project-form-div">
-                <p>------------------------</p>
                 <div className="sub-project-percent">
                   <div className="">
                     <div
@@ -147,23 +146,12 @@ function EditProjectSubProjects({ tempSubProjects, setTempSubProjects }) {
                   >
                     Remove Subproject
                   </button>
-                  {/* <input
-                    key={subProject.id}
-                    className="project-name"
-                    type="text"
-                    value={subProject.subProjectRoles.join(", ")}
-                    onChange={(e) =>
-                      handleSubProjectRolesChange(index, e.target.value)
-                    }
-                    style={{ backgroundColor: "#1b2348" }}
-                  ></input> */}
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <p>------------------------</p>
       <button
         className="role-btn add-subproject-btn"
         onClick={addNewSubProject}

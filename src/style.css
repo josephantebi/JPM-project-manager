@@ -19,7 +19,8 @@ body {
   background-color: #232b5a;
   color: black;
   padding: 48px 64px;
-  /* font-family: "Roboto", sans-serif; */
+  overflow-x: hidden;
+  overflow-x: hidden;
   font-family: "Lato", sans-serif;
 }
 
@@ -197,6 +198,8 @@ p {
 
 .role {
   margin-bottom: 10px;
+  color: white;
+  font-family: "Merriweather", sans-serif;
 }
 
 /*  */
@@ -223,6 +226,22 @@ p {
   margin-top: 10px;
   width: 100%;
   flex-grow: 1;
+}
+
+.error-input {
+  border: 1px solid red;
+}
+
+.error-message,
+.error-message-sub {
+  color: red;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.error-message-sub {
+  display: block;
+  margin-top: 2px;
 }
 
 .form-var {
@@ -549,7 +568,7 @@ p {
 }
 
 .sub-project-name {
-  flex-grow: 1; /* מאפשר לשם הפרויקט המשני לקחת את מרבית המקום */
+  flex-grow: 1;
 }
 
 .sub-project-percent {
@@ -626,8 +645,6 @@ p {
   padding: 20px 24px;
   margin-top: 10px;
   margin-bottom: 16px;
-  /* display: flex;
-  align-items: center; */
   letter-spacing: 1.5px;
   border-radius: 10px;
   width: 100%;
@@ -1047,11 +1064,12 @@ ul {
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1180px) {
   .project {
     flex-direction: column;
     gap: 10px;
     align-items: start;
+    width: auto;
   }
   .project-in {
     display: flex;
@@ -1092,6 +1110,7 @@ ul {
   }
   .project-data {
     flex-direction: column;
+    gap: 10px;
   }
   .btn-all-role {
     margin-bottom: 20px;
@@ -1115,9 +1134,7 @@ ul {
     padding: 16px;
   }
   .project {
-    padding: 12px 16px;
-    width: auto;
-    height: auto;
+    padding: 10px;
   }
   .sort-list-div {
     margin-top: 10px;
@@ -1137,17 +1154,13 @@ ul {
   }
   .full-project {
     grid-template-columns: 1fr;
-    width: auto;
+    display: flex;
   }
-  .project-name {
-    font-size: large;
-    width: 100%;
-    height: auto;
-  }
-  .project-details {
-    font-size: large;
-    width: 100%;
-    height: auto;
+  .project-name,
+  .sub-project-grid,
+  .project-details,
+  .project-data {
+    font-size: medium;
   }
   .btn-all-role {
     margin-bottom: 0px;
@@ -1159,4 +1172,70 @@ ul {
   .full-project-btn {
     font-size: larger;
   }
+  .my-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .my-profile-buttons {
+    align-self: flex-start;
+    width: 100%;
+  }
+  .my-profile-view {
+    width: 100%;
+    text-align: center;
+  }
+  .save-user-btn {
+    margin-left: 0px;
+  }
+  .add-new-user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-left: 25px;
+  }
+  .add-new-user-input {
+    width: 60%;
+  }
+  .project-subprojects {
+    background-color: #020d4b;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    letter-spacing: 1.5px;
+    min-height: 130px;
+    min-height: 20px;
+    height: auto;
+  }
+  .sub-project-grid {
+    font-size: medium;
+    display: block;
+  }
+  .sub-project-grid {
+    font-size: medium;
+    display: block;
+  }
+  .roles-and-completion {
+    display: block;
+    align-items: start;
+    width: 100%;
+    margin-left: 0px;
+  }
+  .sub-project-roles {
+    text-align: left;
+  }
+  .sub-project-details {
+    font-size: medium;
+    display: block;
+  }
+  .span-full-project {
+    width: 100%;
+  }
+  .roles-and-completion-details {
+    display: block;
+  }
+}
+
+@media (max-width: 460px) {
 }

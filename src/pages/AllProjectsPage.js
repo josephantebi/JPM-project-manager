@@ -2,7 +2,7 @@ import "../style.css";
 import React, { useState, useEffect } from "react";
 import ProjectList from "../components/ProjectList";
 import NewProjectForm from "../components/NewProjectForm";
-import RoleFilter from "../components/RoleFilter";
+import ProjectFilter from "../components/ProjectFilter";
 import { useLogInUser } from "../Providers/log-in-user-provider";
 import AddNewProject from "../components/AddNewProject";
 import { useQuery } from "@tanstack/react-query";
@@ -86,7 +86,7 @@ function AllProjectsPage() {
         <input placeholder="Search" className="filter-by-name" />
       </div> */}
       <main className="main">
-        <RoleFilter
+        <ProjectFilter
           currentRole={currentRole}
           setCurrentRole={setCurrentRole}
           projects={projectsData}

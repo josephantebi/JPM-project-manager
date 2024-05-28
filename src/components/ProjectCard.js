@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import priorityData from "../data/PriorityData";
 import "../style.css";
 
 function ProjectCard({ project, users, isLoadingUsers }) {
@@ -10,9 +11,6 @@ function ProjectCard({ project, users, isLoadingUsers }) {
   const [isTextVisible, setIsTextVisible] = useState(false);
 
   if (isLoadingUsers) return <Spinner />;
-  // const findRolesByNames = (names) => {
-  //   return users.filter((user) => names.includes(user.nickname));
-  // };
 
   function findRolesByNames(names) {
     const lowerCaseNames = names.map((name) => name.toLowerCase());
@@ -33,9 +31,22 @@ function ProjectCard({ project, users, isLoadingUsers }) {
     setIsTextVisible(!isTextVisible);
   };
 
+  function getColorByPriority(priorityName) {
+    const priority = priorityData.find((p) => p.priority === priorityName);
+    return priority ? priority.color : "rgb(255, 255, 255)";
+  }
+
   return (
     <span className="project-in">
       <span>
+        <span
+          style={{
+            color: getColorByPriority(project.priority),
+            fontWeight: "bolder",
+          }}
+        >
+          {project.priority}
+        </span>
         <p className="project-in-name">{project_name}</p>
         {isTextVisible ? (
           <>

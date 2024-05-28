@@ -65,18 +65,21 @@ export default function MultipleSelect({
           multiple
           value={validSelectedNames}
           onChange={handleChange}
-          input={<OutlinedInput label="Name" />}
+          input={<OutlinedInput label="Name" sx={{ borderRadius: "50px" }} />}
           MenuProps={MenuProps}
           sx={{
             ".MuiOutlinedInput-notchedOutline": {
               borderColor: "black",
+              borderRadius: "25px", // Make sure this matches or is visually compatible
             },
             ".MuiSelect-select": {
               bgcolor: "#4e5681",
               color: "white",
+              borderRadius: "25px", // Apply rounding here as well
             },
             ".MuiPaper-root": {
               boxShadow: "none",
+              borderRadius: "25px", // This will round the dropdown menu
             },
           }}
         >
