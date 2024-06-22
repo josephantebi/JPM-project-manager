@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PageNav from "../components/Header";
-import { useDataProvider } from "../Providers/DataProvider";
+import { useDataProvider } from "../Providers/user-data-provider";
 import AddNewUser from "../components/AddNewUser";
 import UserList from "../components/UserList";
 import OrganizationInformation from "../components/OrganizationInformation";

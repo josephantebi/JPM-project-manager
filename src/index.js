@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LogInUserProvider } from "./Providers/log-in-user-provider";
-import { UserDataProvider } from "./Providers/DataProvider";
+import { UserDataProvider } from "./Providers/user-data-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {

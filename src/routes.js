@@ -21,26 +21,22 @@ function Router() {
         <Route path="aboutJPM" element={<AboutJPM />} />
         <Route path="aboutMe" element={<AboutMe />} />
         <Route path="JPMvision" element={<JPMvision />} />
-        <Route path="projects" element={<Navigate to="/" replace />} />
+        <Route path="projects" element={<Navigate to="/" />} />
         <Route
           path="myProfile"
-          element={connected ? <MyProfile /> : <Navigate to="/" replace />}
+          element={connected ? <MyProfile /> : <Navigate to="/" />}
         />
         <Route
           path="adminPage"
-          element={connected ? <AdminPage /> : <Navigate to="/" replace />}
+          element={connected ? <AdminPage /> : <Navigate to="/" />}
         />
         <Route
           path="projects/:id"
-          element={
-            connected ? <Fullprojectpage /> : <Navigate to="/" replace />
-          }
+          element={connected ? <Fullprojectpage /> : <Navigate to="/" />}
         />
         <Route
           path="projects/:id/edit"
-          element={
-            connected ? <EditProjectpage /> : <Navigate to="/" replace />
-          }
+          element={connected ? <EditProjectpage /> : <Navigate to="/" />}
         />
         <Route path="*" element={<JpmNotFoundPage />} />
       </Routes>

@@ -183,6 +183,7 @@ function FirstLogin() {
         percent: project.percent,
         organization: organizationName,
         posted_by: project.posted_by,
+        priority: project.priority,
       };
       mutateAddProject(newProject);
     });
@@ -238,7 +239,7 @@ function FirstLogin() {
       buildingADemoVersion();
       setShowDelayedSpinner(true);
       setCurrentUser({});
-      toast.success("Demo Version created successfully.", {
+      toast.success("Demo Version created successfully, please log in again", {
         duration: 3000,
       });
       setTimeout(() => {

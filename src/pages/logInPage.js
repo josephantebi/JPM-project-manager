@@ -1,5 +1,6 @@
 import "../style.css";
 import GoogleAuth from "../Providers/auth-provider";
+import EmailAndPasswordLogIn from "../components/EmailAndPasswordLogIn";
 
 function LogInPage() {
   return (
@@ -10,6 +11,8 @@ function LogInPage() {
           <br />
           Please log in to see your projects
         </p>
+        {/* <p className="sign-in-message">Sign in with Email and Password</p>
+        <EmailAndPasswordLogIn /> */}
         <GoogleAuth />
       </div>
     </>

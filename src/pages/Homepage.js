@@ -13,9 +13,7 @@ function Homepage() {
   useEffect(() => {
     async function checkUser() {
       if (currentUser && currentUser.email) {
-        // Simulate fetching extra user details like color and organization
         setTimeout(() => {
-          // Simulating fetch delay
           setIsLoading(false);
         }, 1000);
       } else {

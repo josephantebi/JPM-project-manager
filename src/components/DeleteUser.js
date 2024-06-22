@@ -12,7 +12,7 @@ import { deleteProject } from "../services/apiProjects";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { useDataProvider } from "../Providers/DataProvider";
+import { useDataProvider } from "../Providers/user-data-provider";
 import "../style.css";
 
 function DeleteUser() {

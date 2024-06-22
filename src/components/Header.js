@@ -9,6 +9,7 @@ function PageNav() {
   const location = useLocation();
   const { currentUser, connected } = useLogInUser();
   const handleLogout = () => {
+    navigate("/");
     googleLogout();
     window.location.reload();
   };

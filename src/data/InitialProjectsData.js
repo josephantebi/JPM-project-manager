@@ -61,6 +61,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Urgent",
     percent: 100,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -100,6 +101,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Important",
     percent: 67,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -139,6 +141,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross"],
     },
+    priority: "Normal",
     percent: 67,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -199,6 +202,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Urgent",
     percent: 100,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -224,6 +228,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Rachel"],
     },
+    priority: "Important",
     percent: 10,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -256,6 +261,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross"],
     },
+    priority: "Urgent",
     percent: 20,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -309,6 +315,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Low",
     percent: 34,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -348,6 +355,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Low",
     percent: 5,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -387,6 +395,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Phoebe", "Rachel"],
     },
+    priority: "Important",
     percent: 47,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -419,6 +428,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Phoebe", "Monica"],
     },
+    priority: "Low",
     percent: 2,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -465,6 +475,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Normal",
     percent: 33,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -504,6 +515,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Urgent",
     percent: 100,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",
@@ -556,6 +568,7 @@ const initialProjectsData = [
     roles: {
       allRoles: ["Ross", "Phoebe", "Monica", "Rachel", "Chandler", "Joey"],
     },
+    priority: "Urgent",
     percent: 0,
     due_date: "2024-05-30T00:00:00+00:00",
     organization: "Friends Cast",

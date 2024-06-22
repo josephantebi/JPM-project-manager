@@ -9,8 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import Spinner from "../components/Spinner";
 import { getUsersByOrganization } from "../services/apiUsers";
 import { getProjectsByOrganization } from "../services/apiProjects";
-import { useDataProvider } from "../Providers/DataProvider";
-// import { DataContext } from "../Providers/data-provider";
+import { useDataProvider } from "../Providers/user-data-provider";
 
 function AllProjectsPage() {
   const [showForm, setShowForm] = useState(false);

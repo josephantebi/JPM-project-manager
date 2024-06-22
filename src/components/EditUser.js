@@ -11,7 +11,7 @@ import { editUser } from "../services/apiUsers";
 import toast from "react-hot-toast";
 import "../style.css";
 import { editProject } from "../services/apiProjects";
-import { useDataProvider } from "../Providers/DataProvider";
+import { useDataProvider } from "../Providers/user-data-provider";
 
 function EditUser() {
   const { currentUser, setCurrentUser } = useLogInUser();

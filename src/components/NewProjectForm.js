@@ -13,25 +13,35 @@ function NewProjectForm({ setShowForm, usersData }) {
   const [projectName, setProjectName] = useState("");
   const [projectDetails, setProjectDetails] = useState("");
   const [priority, setPriority] = useState("");
-  const [inputs, setInputs] = useState([{ name: "", selectedUsers: [] }]);
+  const [inputs, setInputs] = useState([
+    { id: 1, subProjectName: "", subProjectRoles: [], subProjectPercent: "0" },
+  ]);
   const [dueDate, setDueDate] = useState("");
   const [errors, setErrors] = useState({});
   const queryClient = useQueryClient();
   const { currentUser } = useLogInUser();
 
   const handleAddInput = () => {
-    setInputs([...inputs, { name: "", selectedUsers: [] }]);
+    setInputs([
+      ...inputs,
+      {
+        id: inputs.length + 1,
+        subProjectName: "",
+        subProjectRoles: [],
+        subProjectPercent: "0",
+      },
+    ]);
   };
 
   const handleRemoveInput = (index) => {
     const newInputs = inputs.slice();
     newInputs.splice(index, 1);
-    setInputs(newInputs);
+    setInputs(newInputs.map((input, idx) => ({ ...input, id: idx + 1 })));
   };
 
   const handleSubProjectNameChange = (event, index) => {
     const newInputs = [...inputs];
-    newInputs[index].name = event.target.value;
+    newInputs[index].subProjectName = event.target.value;
     setInputs(newInputs);
     const newErrors = { ...errors };
     delete newErrors[`subprojectName-${index}`];
@@ -40,7 +50,7 @@ function NewProjectForm({ setShowForm, usersData }) {
 
   const handleSelectedUsersChange = (selectedUsers, index) => {
     const newInputs = [...inputs];
-    newInputs[index].selectedUsers = selectedUsers;
+    newInputs[index].subProjectRoles = selectedUsers;
     setInputs(newInputs);
     const newErrors = { ...errors };
     delete newErrors[`subprojectUsers-${index}`];
@@ -98,9 +108,9 @@ function NewProjectForm({ setShowForm, usersData }) {
     if (!priority) newErrors.priority = "Priority is required";
     if (!dueDate) newErrors.dueDate = "Due date is required";
     inputs.forEach((input, index) => {
-      if (!input.name)
+      if (!input.subProjectName)
         newErrors[`subprojectName-${index}`] = "Subproject name is required";
-      if (input.selectedUsers.length === 0)
+      if (input.subProjectRoles.length === 0)
         newErrors[`subprojectUsers-${index}`] =
           "At least one user must be selected for each subproject";
     });
@@ -110,11 +120,13 @@ function NewProjectForm({ setShowForm, usersData }) {
         project_name: projectName,
         project_details: projectDetails,
         sub_projects: { allSubProjects: inputs },
-        roles: { allRoles: inputs.flatMap((input) => input.selectedUsers) },
+        roles: { allRoles: inputs.flatMap((input) => input.subProjectRoles) },
         priority: priority,
         due_date: dueDate,
+        percent: 0,
         posted_by: currentUser.nickname,
         organization: currentUser.organization,
+        created_at: new Date(),
       };
       mutate(newProject);
     } else {
@@ -168,7 +180,7 @@ function NewProjectForm({ setShowForm, usersData }) {
             }`}
             type="text"
             placeholder="Sub-project name"
-            value={input.name}
+            value={input.subProjectName}
             onChange={(event) => handleSubProjectNameChange(event, index)}
           />
           {errors[`subprojectName-${index}`] && (
@@ -178,7 +190,7 @@ function NewProjectForm({ setShowForm, usersData }) {
           )}
           <MultipleSelect
             users={usersData}
-            selectedNames={input.selectedUsers}
+            selectedNames={input.subProjectRoles}
             onSelectedNamesChange={(users) =>
               handleSelectedUsersChange(users, index)
             }
@@ -199,6 +211,15 @@ function NewProjectForm({ setShowForm, usersData }) {
           )}
         </div>
       ))}
+
+      <button
+        className="role-btn add-subproject-btn"
+        type="button"
+        onClick={handleAddInput}
+      >
+        Add New Subproject
+      </button>
+
       <div className="new-project-text">Select priority:</div>
       <PrioritySelect priority={priority} setPriority={handleChangePriority} />
       {errors.priority && (

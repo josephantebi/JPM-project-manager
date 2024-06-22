@@ -10,7 +10,7 @@ import { useLogInUser } from "../Providers/log-in-user-provider";
 import TextField from "@mui/material/TextField";
 import { editProject } from "../services/apiProjects";
 import { deleteUser } from "../services/apiUsers";
-import { useDataProvider } from "../Providers/DataProvider";
+import { useDataProvider } from "../Providers/user-data-provider";
 
 function UserCard({ user }) {
   const [isTextVisible, setIsTextVisible] = useState(false);
