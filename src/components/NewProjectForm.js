@@ -21,6 +21,10 @@ function NewProjectForm({ setShowForm, usersData }) {
   const queryClient = useQueryClient();
   const { currentUser } = useLogInUser();
 
+  const capitalizeFirstLetter = (string) => {
+    return string.replace(/(^\w|\.\s*\w)/g, (c) => c.toUpperCase());
+  };
+
   const handleAddInput = () => {
     setInputs([
       ...inputs,
@@ -41,7 +45,7 @@ function NewProjectForm({ setShowForm, usersData }) {
 
   const handleSubProjectNameChange = (event, index) => {
     const newInputs = [...inputs];
-    newInputs[index].subProjectName = event.target.value;
+    newInputs[index].subProjectName = capitalizeFirstLetter(event.target.value);
     setInputs(newInputs);
     const newErrors = { ...errors };
     delete newErrors[`subprojectName-${index}`];
@@ -58,14 +62,14 @@ function NewProjectForm({ setShowForm, usersData }) {
   };
 
   const handleChangeProjectName = (e) => {
-    setProjectName(e.target.value);
+    setProjectName(capitalizeFirstLetter(e.target.value));
     const newErrors = { ...errors };
     delete newErrors.projectName;
     setErrors(newErrors);
   };
 
   const handleChangeProjectDetails = (e) => {
-    setProjectDetails(e.target.value);
+    setProjectDetails(capitalizeFirstLetter(e.target.value));
     const newErrors = { ...errors };
     delete newErrors.projectDetails;
     setErrors(newErrors);
@@ -179,7 +183,7 @@ function NewProjectForm({ setShowForm, usersData }) {
               errors[`subprojectName-${index}`] ? "error-input" : ""
             }`}
             type="text"
-            placeholder="Sub-project name"
+            placeholder="Enter sub-project name"
             value={input.subProjectName}
             onChange={(event) => handleSubProjectNameChange(event, index)}
           />
